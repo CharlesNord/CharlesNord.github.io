@@ -98,7 +98,7 @@
 <meta property="og:image" content="http://charlesnord.github.io/2017/03/05/osx-占用/img1.png">
 <meta property="og:image" content="http://charlesnord.github.io/2017/03/05/osx-占用/img2.jpeg">
 <meta property="og:image" content="http://charlesnord.github.io/2017/03/05/osx-占用/img3.jpeg">
-<meta property="og:updated_time" content="2017-03-04T19:26:48.000Z">
+<meta property="og:updated_time" content="2017-03-05T06:51:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="项目已被 OSX 使用，不能打开">
 <meta name="twitter:description" content="问题描述windows NTFS 格式的移动硬盘经常出现文件不能打开的情况，文件的颜色变浅，双击打开没有反应，右键打开方式，出现提示：项目 “xxx” 已被 OSX 使用，不能打开。如下图所示：">
@@ -379,14 +379,22 @@
 <p>terminal 中输入 <code>xattr -c 文件名</code> 解除 osx 对文件的占用，此时重复上一步，将不会在权限里面出现<code>@</code>。命令行如下图所示：<br><img src="/2017/03/05/osx-占用/img3.jpeg" alt="清除 @" title="清除 @"><br>执行完这个命令后，文件就能正常打开了。这个方法需要安装 Mounty，对于不想安装 Mounty 的，可以通过命令行将硬盘挂载为读写模式，具体方法见下一部分。</p>
 <h3 id="挂载硬盘为读写模式"><a href="#挂载硬盘为读写模式" class="headerlink" title="挂载硬盘为读写模式"></a>挂载硬盘为读写模式</h3><p>分为以下几步：</p>
 <ol>
-<li>插入硬盘后，查看 /Volumes 下的文件，此时应该能发现两个硬盘，一个是系统的硬盘，另一个是插入的外接硬盘</li>
-<li>输入 <code>diskutil info /Volumes/硬盘名</code> 查看 硬盘的 <code>Device Node</code>。我的是 <code>/dev/disk2s1</code> (以上两步也可以用 <code>diskutil list</code> 查看，前提是能分辨出哪个是系统硬盘，哪个是刚插上的硬盘)</li>
-<li>弹出该硬盘 <code>hdiutil eject /Volumes/硬盘名</code>，此时终端会输出 <code>&quot;disk2&quot; unmounted</code> 以及 <code>&quot;disk2&quot; ejected</code></li>
-<li>在 <code>/Volumes/</code> 下创建一个目录，稍后将硬盘文件挂载到这个目录上 <code>sudo mkdir /Volumes/MYHD</code></li>
-<li>将硬盘重新挂载到上面的目录中，并赋予读写权限<br><code>sudo mount_ntfs -o rw,nobrowse /dev/disk2s1 /Volumes/MYHD/</code></li>
-<li>此时可以进入 <code>/Volumes/MYHD</code> 目录，查看硬盘内部文件了</li>
-<li>通过终端进入挂载目录，输入 <code>xattr -c 文件名</code> 就可以解除osx 对文件的占用了，这一步和第一种方法相同。</li>
-<li>最后将硬盘弹出 <code>hdiutil eject /Volumes/MYHD</code>，这个命令执行完后，MYHD 目录也会消失，省的你再删了。</li>
+<li><p>插入硬盘后，查看 /Volumes 下的文件，此时应该能发现两个硬盘，一个是系统的硬盘，另一个是插入的外接硬盘  </p>
+</li>
+<li><p>输入 <code>diskutil info /Volumes/硬盘名</code> 查看 硬盘的 <code>Device Node</code>。我的是 <code>/dev/disk2s1</code> (以上两步也可以用 <code>diskutil list</code> 查看，前提是能分辨出哪个是系统硬盘，哪个是刚插上的硬盘)  </p>
+</li>
+<li><p>弹出该硬盘 <code>hdiutil eject /Volumes/硬盘名</code>，此时终端会输出 <code>&quot;disk2&quot; unmounted</code> 以及 <code>&quot;disk2&quot; ejected</code>  </p>
+</li>
+<li><p>在 <code>/Volumes/</code> 下创建一个目录，稍后将硬盘文件挂载到这个目录上 <code>sudo mkdir /Volumes/MYHD</code>  </p>
+</li>
+<li><p>将硬盘重新挂载到上面的目录中，并赋予读写权限<br><code>sudo mount_ntfs -o rw,nobrowse /dev/disk2s1 /Volumes/MYHD/</code>  </p>
+</li>
+<li><p>此时可以进入 <code>/Volumes/MYHD</code> 目录，查看硬盘内部文件了  </p>
+</li>
+<li><p>通过终端进入挂载目录，输入 <code>xattr -c 文件名</code> 就可以解除osx 对文件的占用了，这一步和第一种方法相同。  </p>
+</li>
+<li><p>最后将硬盘弹出 <code>hdiutil eject /Volumes/MYHD</code>，这个命令执行完后，MYHD 目录也会消失，省的你再删了。</p>
+</li>
 </ol>
 
       
