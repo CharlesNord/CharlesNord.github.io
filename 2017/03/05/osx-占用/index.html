@@ -98,7 +98,7 @@
 <meta property="og:image" content="http://charlesnord.github.io/2017/03/05/osx-占用/img1.png">
 <meta property="og:image" content="http://charlesnord.github.io/2017/03/05/osx-占用/img2.jpeg">
 <meta property="og:image" content="http://charlesnord.github.io/2017/03/05/osx-占用/img3.jpeg">
-<meta property="og:updated_time" content="2017-03-05T06:51:11.000Z">
+<meta property="og:updated_time" content="2017-03-05T06:54:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="项目已被 OSX 使用，不能打开">
 <meta name="twitter:description" content="问题描述windows NTFS 格式的移动硬盘经常出现文件不能打开的情况，文件的颜色变浅，双击打开没有反应，右键打开方式，出现提示：项目 “xxx” 已被 OSX 使用，不能打开。如下图所示：">
@@ -375,7 +375,11 @@
 
       
         <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>windows NTFS 格式的移动硬盘经常出现文件不能打开的情况，文件的颜色变浅，双击打开没有反应，右键打开方式，出现提示：项目 “xxx” 已被 OSX 使用，不能打开。如下图所示：<br><img src="/2017/03/05/osx-占用/img1.png" alt="项目已被 OSX 使用，不能打开" title="项目已被 OSX 使用，不能打开"></p>
-<a id="more"></a>&gt;<br>## 解决方案<br>解决方案分为两步：<br><br>### 安装 <a href="http://enjoygineering.com/mounty/" target="_blank" rel="external">Mounty</a><br><br>正常的 NTFS 格式硬盘是无法从 mac 向其拷贝文件的，因为 mac 系统对其实只读权限，无法修改硬盘内部文件。而该软件的作用是将 NTFS 格式的移动硬盘挂载到 mac 系统上，使系统获得对硬盘的读写权限，便于我们修改硬盘内部的文件。<br><br>### 修改文件信息<br>安装好 <a href="http://enjoygineering.com/mounty/" target="_blank" rel="external">Mounty</a> 后，就可以将硬盘挂载到系统上，并使系统获得对其的读写权限了。<br><br>打开 terminal，输入 <code>ls -l 文件名</code> 查看文件权限，可以先输入<code>ls -l</code>空格，然后直接将硬盘中的文件拖拽到 terminal 的该行尾部，回车。发现其权限为 <code>-rwxr-xr-x@</code> 最末尾的 <code>@</code> 即表示该文件被 mac osx 占用，如下图所示：<br><img src="/2017/03/05/osx-占用/img2.jpeg" alt="注意观察-rwxr-xr-x@" title="注意观察-rwxr-xr-x@">
+<a id="more"></a>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>解决方案分为两步：</p>
+<h3 id="安装-Mounty"><a href="#安装-Mounty" class="headerlink" title="安装 Mounty"></a>安装 <a href="http://enjoygineering.com/mounty/" target="_blank" rel="external">Mounty</a></h3><p>正常的 NTFS 格式硬盘是无法从 mac 向其拷贝文件的，因为 mac 系统对其实只读权限，无法修改硬盘内部文件。而该软件的作用是将 NTFS 格式的移动硬盘挂载到 mac 系统上，使系统获得对硬盘的读写权限，便于我们修改硬盘内部的文件。</p>
+<h3 id="修改文件信息"><a href="#修改文件信息" class="headerlink" title="修改文件信息"></a>修改文件信息</h3><p>安装好 <a href="http://enjoygineering.com/mounty/" target="_blank" rel="external">Mounty</a> 后，就可以将硬盘挂载到系统上，并使系统获得对其的读写权限了。</p>
+<p>打开 terminal，输入 <code>ls -l 文件名</code> 查看文件权限，可以先输入<code>ls -l</code>空格，然后直接将硬盘中的文件拖拽到 terminal 的该行尾部，回车。发现其权限为 <code>-rwxr-xr-x@</code> 最末尾的 <code>@</code> 即表示该文件被 mac osx 占用，如下图所示：<br><img src="/2017/03/05/osx-占用/img2.jpeg" alt="注意观察-rwxr-xr-x@" title="注意观察-rwxr-xr-x@"></p>
 <p>terminal 中输入 <code>xattr -c 文件名</code> 解除 osx 对文件的占用，此时重复上一步，将不会在权限里面出现<code>@</code>。命令行如下图所示：<br><img src="/2017/03/05/osx-占用/img3.jpeg" alt="清除 @" title="清除 @"><br>执行完这个命令后，文件就能正常打开了。这个方法需要安装 Mounty，对于不想安装 Mounty 的，可以通过命令行将硬盘挂载为读写模式，具体方法见下一部分。</p>
 <h3 id="挂载硬盘为读写模式"><a href="#挂载硬盘为读写模式" class="headerlink" title="挂载硬盘为读写模式"></a>挂载硬盘为读写模式</h3><p>分为以下几步：</p>
 <ol>
@@ -580,7 +584,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#挂载硬盘为读写模式"><span class="nav-number">1.1.</span> <span class="nav-text">挂载硬盘为读写模式</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-Mounty"><span class="nav-number">2.1.</span> <span class="nav-text">安装 Mounty</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改文件信息"><span class="nav-number">2.2.</span> <span class="nav-text">修改文件信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#挂载硬盘为读写模式"><span class="nav-number">2.3.</span> <span class="nav-text">挂载硬盘为读写模式</span></a></li></ol></li></ol></div>
             
 
           </div>
