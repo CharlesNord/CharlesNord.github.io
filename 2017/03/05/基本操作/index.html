@@ -90,18 +90,24 @@
 
 
 <meta name="description" content="本文参考了官网文档
-写作创建新文章：1$ hexo new [layout] &amp;lt;title&amp;gt;">
+写作创建新文章，在根目录下输入：1$ hexo new [layout] &amp;lt;title&amp;gt;
+其中的 [layout] 默认为 post，可以通过修改 _config.yml 中的 default_layout 设置默认布局。
+布局（Layout）Hexo 有三种默认的布局：post、page 和 draft ，它们分别保存在本地不同的路径，二自定义的其它布局和 pos">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hexo 写博客基本操作">
+<meta property="og:title" content="Hexo 基本操作">
 <meta property="og:url" content="http://charlesnord.github.io/2017/03/05/基本操作/index.html">
 <meta property="og:site_name" content="计算机视觉笔记">
 <meta property="og:description" content="本文参考了官网文档
-写作创建新文章：1$ hexo new [layout] &amp;lt;title&amp;gt;">
-<meta property="og:updated_time" content="2017-03-05T07:16:48.000Z">
+写作创建新文章，在根目录下输入：1$ hexo new [layout] &amp;lt;title&amp;gt;
+其中的 [layout] 默认为 post，可以通过修改 _config.yml 中的 default_layout 设置默认布局。
+布局（Layout）Hexo 有三种默认的布局：post、page 和 draft ，它们分别保存在本地不同的路径，二自定义的其它布局和 pos">
+<meta property="og:updated_time" content="2017-03-05T17:36:59.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hexo 写博客基本操作">
+<meta name="twitter:title" content="Hexo 基本操作">
 <meta name="twitter:description" content="本文参考了官网文档
-写作创建新文章：1$ hexo new [layout] &amp;lt;title&amp;gt;">
+写作创建新文章，在根目录下输入：1$ hexo new [layout] &amp;lt;title&amp;gt;
+其中的 [layout] 默认为 post，可以通过修改 _config.yml 中的 default_layout 设置默认布局。
+布局（Layout）Hexo 有三种默认的布局：post、page 和 draft ，它们分别保存在本地不同的路径，二自定义的其它布局和 pos">
 
 
 
@@ -135,7 +141,7 @@
 
 
 
-  <title> hexo 写博客基本操作 | 计算机视觉笔记 </title>
+  <title> Hexo 基本操作 | 计算机视觉笔记 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -285,7 +291,7 @@
             
             
               
-                hexo 写博客基本操作
+                Hexo 基本操作
               
             
           </h1>
@@ -374,7 +380,112 @@
 
       
         <p>本文参考了<a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="external">官网文档</a></p>
-<h2 id="写作"><a href="#写作" class="headerlink" title="写作"></a>写作</h2><p>创建新文章：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new [layout] &lt;title&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="写作"><a href="#写作" class="headerlink" title="写作"></a>写作</h2><p>创建新文章，在根目录下输入：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new [layout] &lt;title&gt;</div></pre></td></tr></table></figure></p>
+<p>其中的 <code>[layout]</code> 默认为 <code>post</code>，可以通过修改 <code>_config.yml</code> 中的 <code>default_layout</code> 设置默认布局。</p>
+<h3 id="布局（Layout）"><a href="#布局（Layout）" class="headerlink" title="布局（Layout）"></a>布局（Layout）</h3><p>Hexo 有三种默认的布局：<code>post</code>、<code>page</code> 和 <code>draft</code> ，它们分别保存在本地不同的路径，二自定义的其它布局和 <code>post</code> 布局都保存在 <code>source/_posts</code> 文件夹中。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><strong>布局</strong></th>
+<th style="text-align:left"><strong>路径</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>post</code></td>
+<td style="text-align:left"><code>source/_posts</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>page</code></td>
+<td style="text-align:left"><code>source</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>draft</code></td>
+<td style="text-align:left"><code>source/_drafts</code></td>
+</tr>
+</tbody>
+</table>
+<p>如果不想文章的格式被处理，则可以在 Front-Matter 中设置 <code>layout: false</code>。这时网页只会显示纯文本，不会加载任何模板，但是这时的网页也并不会保留 markdown 的标记符号，而是将其转为 html 的标签。</p>
+<h3 id="文件名称"><a href="#文件名称" class="headerlink" title="文件名称"></a>文件名称</h3><p>创建新文件时，通过命令：<code>hexo new filename</code>，这时在 <code>source/_posts</code> 中会出现文件 <code>filename.md</code>，并且在文件头部初始化了 Front-Matter。但是为了便于管理文件，希望在文件名前面加入创建日期，保存为<code>日期+文件名.md</code>，例如 <code>2017-03-05-filename.md</code>，则需要修改 hexo 根目录下的 <code>_config.yml</code> 文件，将其中的 <code>new_post_name</code> 字段参数设置为: <code>:year-:month-:day-:title.md</code>，这样就可以达到预期效果了。其中 <code>:month</code> 和 <code>:day</code> 可以替换为 <code>:i_month</code> 和 <code>:i_day</code>，使得建立的文件名月份和日期前面没有0（七号的 07 替换为 7）。</p>
+<h3 id="草稿"><a href="#草稿" class="headerlink" title="草稿"></a>草稿</h3><p>上文中提到了 Hexo 的 <code>draft</code> 布局，可以通过命令 <code>hexo new draft filename</code> 建立这种布局的文件，它默认保存在 <code>source/_drafts</code> 文件夹，可以通过 <code>publish</code> 命令将其移动到 <code>source/_posts</code> 文件夹中，该命令中也可以通过 <code>layout</code> 来指定布局。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo publish [layout] &lt;title&gt;</div></pre></td></tr></table></figure></p>
+<p>保存为草稿的文章不会在网页中显示。</p>
+<h2 id="Front-matter"><a href="#Front-matter" class="headerlink" title="Front-matter"></a>Front-matter</h2><p>Front-matter <code>hexo new filename</code> 命令生成的文件中自带的配置信息，位于文件开头，用于制定当前文稿的样式。例如本文的 Front-matter 为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line">title: hexo 基本操作</div><div class="line">date: 2017-03-05 15:11:26</div><div class="line">tags:</div><div class="line">- hexo 命令</div><div class="line">categories: </div><div class="line">- 网站配置相关</div><div class="line">---</div></pre></td></tr></table></figure></p>
+<p>除了上面的 title、date、tags、categories 之外，还可以添加别的字段，例如</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><strong>字段</strong></th>
+<th style="text-align:left"><strong>作用</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>comments: true</code></td>
+<td style="text-align:left">允许或禁止该文章的评论，其值默认为 <code>true</code> 因此可以不指定，如果设为 <code>false</code>，则禁止游客对该文进行评论</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>updated: 日期</code></td>
+<td style="text-align:left">用于设置文章更新日期</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>permalink: :year/:month/:day/:title/</code></td>
+<td style="text-align:left">用于生成访问链接的格式，默认为 <code>https://charlesnord.github.io/2016/05/06/your_title/</code> 类似的，可以改为 <code>:year/:month/:day/:title.html</code> 更搜索引擎友好</td>
+</tr>
+</tbody>
+</table>
+<h3 id="分类和标签"><a href="#分类和标签" class="headerlink" title="分类和标签"></a>分类和标签</h3><p>只有 <code>post</code> 布局的文章支持分类和标签。分类和标签分别对应 Front-Matter 中的 <code>categories:</code> 和 <code>tags:</code>字段，其书写格式如上一节所示。分类和标签不同，分类有顺序性和层次性，而标签不分顺序和层次。</p>
+<p>如果 <code>categories:</code> 下指定了多个类别，那么这些类别是包含关系，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">categories:</div><div class="line">- Diary</div><div class="line">- Life</div></pre></td></tr></table></figure></p>
+<p>其中 <code>Life</code> 是 <code>Diary</code> 的子分类，而不是并列分类。因此 <code>categories:</code> 最好只指定一个类别，而 <code>tags:</code> 可以指定多个标签，每个标签以 <code>-</code> 开头，在 <code>tag:</code> 下单独占一行。</p>
+<h2 id="标签插件（Tag-Plugins）"><a href="#标签插件（Tag-Plugins）" class="headerlink" title="标签插件（Tag Plugins）"></a>标签插件（Tag Plugins）</h2><p>这里的标签插件不是上文的标签，它们用于在文章中快速插入特定内容的插件，例如图片、代码块等。这里的语法和 markdown 不同，是 Hexo 特有的语法（也可以用 markdown 语法）。</p>
+<h3 id="引用块"><a href="#引用块" class="headerlink" title="引用块"></a>引用块</h3><p>在文章中插入引言，可包含作者、来源和标题。<br><strong>别号：</strong> quote<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;% blockquote [author[, source]] [link] [source_link_title] %&#125;</div><div class="line">content</div><div class="line">&#123;% endblockquote%&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h4><ul>
+<li><strong>没有提供参数，则只输出普通的 blockquote</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;% blockquote %&#125;</div><div class="line">我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”</div><div class="line">我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。</div><div class="line">我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”</div><div class="line">妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！”</div><div class="line">&#123;% endblockquote %&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote><p>我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”<br>我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。<br>我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”<br>妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！”</p>
+</blockquote>
+<ul>
+<li><strong>引用书上的句子</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;% blockquote 王小波，绿毛水怪 %&#125;</div><div class="line">我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”</div><div class="line">我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。</div><div class="line">我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”</div><div class="line">妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！”</div><div class="line">&#123;% endblockquote %&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote><p>我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”<br>我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。<br>我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”<br>妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！”</p>
+<footer><strong>王小波，绿毛水怪</strong></footer></blockquote>  
+<ul>
+<li><strong>引用网络上的文章</strong>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;% blockquote 王小波，绿毛水怪 %&#125;</div><div class="line">我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”</div><div class="line">我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。</div><div class="line">我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”</div><div class="line">妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！”</div><div class="line">&#123;% endblockquote %&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote><p>我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”<br>我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。<br>我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”<br>妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！”</p>
+<footer><strong>王小波</strong><cite><a href="http://www.kanunu8.com/book3/7055/147969.html" target="_blank" rel="external">绿毛水怪</a></cite></footer></blockquote>
+<h3 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h3><p><strong>别号：</strong>code<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;% codeblock [title] [lang:language] [url] [link text] %&#125;</div><div class="line">code snippet</div><div class="line">&#123;% endcodeblock %&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>反引号代码块：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">```[language] [title] [url] [link text] code snippet```</div></pre></td></tr></table></figure></p>
+<h4 id="样例-1"><a href="#样例-1" class="headerlink" title="样例"></a>样例</h4><ul>
+<li><strong>Hexo 代码块</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;% codeblock lang:python %&#125;</div><div class="line">x = 1</div><div class="line">y = 2</div><div class="line">print x + y</div><div class="line">&#123;% endcodeblock%&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">x = <span class="number">1</span></div><div class="line">y = <span class="number">2</span></div><div class="line"><span class="keyword">print</span> x + y</div></pre></td></tr></table></figure>
+<ul>
+<li><strong>反引号代码块</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">```python</div><div class="line">x = 1</div><div class="line">y = 2</div><div class="line">print x + y</div><div class="line">```</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">x = <span class="number">1</span></div><div class="line">y = <span class="number">2</span></div><div class="line"><span class="keyword">print</span> x + y</div></pre></td></tr></table></figure>
+<p>更多的标签插件（Tag Plugins）请参考<a href="https://hexo.io/zh-cn/docs/tag-plugins.html" target="_blank" rel="external">官方文档</a></p>
+<h2 id="资源文件夹"><a href="#资源文件夹" class="headerlink" title="资源文件夹"></a>资源文件夹</h2><p>资源文件夹是指存储文章中图片、CSS、JS 等文件的文件夹。如果 Hexo 项目中只有少量图片，可以把它们放在 source/images 文件夹中。然后用 markdown 语法 <code>![](/images/image.jpg)</code> 在文章中引用它们。</p>
+<h3 id="文章资源文件夹"><a href="#文章资源文件夹" class="headerlink" title="文章资源文件夹"></a>文章资源文件夹</h3><p>正常情况下建议采用文章资源文件夹，对每篇文章的资源进行分别存储。首先需要修改 <code>_config.yml</code> 中的 <code>post_asset_folder</code> 选项设置为 <code>true</code> 来打开。<br>打开这个选项后，Hexo 会每次在用户通过 <code>hexo new filename</code> 新建的文章建立与文章同名的文件夹，用来存储该文章需要的资源。</p>
+<h3 id="相对路径引用的标签插件"><a href="#相对路径引用的标签插件" class="headerlink" title="相对路径引用的标签插件"></a>相对路径引用的标签插件</h3><p>通过常规的 markdown 语法和相对路径来引用图片和其它资源可能会导致它们在主页或者 archieve 页显示不正确，因此建议采用 hexo 的标签插件来对其进行引用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;% asset_img slug [title] %&#125;</div><div class="line">&#123;% asset_path slug %&#125;</div><div class="line">&#123;% asset_link slug [title] %&#125;</div></pre></td></tr></table></figure>
+<p>建议采用插件引用图片，例如，在与文章同名的资源文件夹下放置 <code>example.jpg</code> 图片，然后，在文章中通过下面的语句进行引用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;% asset_img example.jpg This is an example %&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h2><p>编辑完文档后，通过在 hexo 根目录执行命令 <code>hexo server</code>（<code>hexo s</code>） 来将项目部署到本地服务器上，部署端口默认为 <code>4000</code>。此时，在本机输入 <code>http://localhost:4000</code> 即可访问网站。服务器启动期间，Hexo 会监视文件变动并自动更新，因此每次改动源文件后无需重新生成、重启服务器才可以看到变化，直接刷新网页即可。 </p>
+<p>如果想修改默认端口，例如改为 <code>5000</code> ，可以运行命令 <code>hexo server -p 5000</code>。</p>
+<p>除了在主机上通过 <code>http://localhost:4000</code> 访问，在局域网下，连接同一个路由器的设备都可以访问该网站，前提是知道该网站服务器的局域网 ip 地址。在 mac 上，可以通过: 系统偏好设置 -&gt; 网络 查看本机的局域网 ip。例如本人电脑目前的局域网 ip 地址为 <code>192.168.1.104</code>，在本人手机浏览器输入：<code>http://192.168.1.104:4000</code>，即可访问本网站。至于如何通过外网访问，请阅读这一系列的 <a href="http://zhiho.github.io/2015/09/21/start-hexo/" target="_blank" rel="external">Hexo 搭建教程</a>。</p>
+<h2 id="生成文件"><a href="#生成文件" class="headerlink" title="生成文件"></a>生成文件</h2><p>如果想将网站部署到 github 上，则需要将本地的工程生成为静态文件，在 Hexo 根目录下执行命令：<code>hexo generate</code>（<code>hexo g</code>）。生成后执行 <code>hexo deploy</code> 将其部署到 github。对于部署到 github 的静态文件，本地修改源文件不能实时显示到网站上，因此每次做出修改后，想要观察效果，可以用上节的命令将其部署到本地服务器，确认没有问题了，再用本节的命令生成静态文件，并部署到 github。</p>
+<h3 id="监视文件变动"><a href="#监视文件变动" class="headerlink" title="监视文件变动"></a>监视文件变动</h3><p>如果要重新生成所有文件，则需要执行命令 <code>hexo clean</code>，<code>hexo g</code>，但是这样往往生成的时间会很长。也可以采用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo generate --watch</div></pre></td></tr></table></figure></p>
+<p>实时地生成静态文件，执行上述命令后，Hexo 能够通过对比文件的 SHA1 checksum 监视文件的实时变动，只对变动的文件生成静态文件。</p>
+<h3 id="生成后部署"><a href="#生成后部署" class="headerlink" title="生成后部署"></a>生成后部署</h3><p>部署到 github 采用 <code>hexo deploy</code> 命令，也可以任意执行下面的两条组合命令中的一条，让 Hexo 在生成完成后自动部署网站，两条命令是等价的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo generate --deploy</div><div class="line">hexo deploy --generate</div></pre></td></tr></table></figure></p>
+<p>或者<strong>简写</strong>为：</p>
+<blockquote>
+<p>hexo g -d<br>hexo d -g</p>
+</blockquote>
+<p>至此，Hexo 的基本操作就介绍完了，完整介绍请查阅<a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="external">官网文档</a></p>
 
       
     </div>
@@ -551,7 +662,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写作"><span class="nav-number">1.</span> <span class="nav-text">写作</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写作"><span class="nav-number">1.</span> <span class="nav-text">写作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#布局（Layout）"><span class="nav-number">1.1.</span> <span class="nav-text">布局（Layout）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件名称"><span class="nav-number">1.2.</span> <span class="nav-text">文件名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#草稿"><span class="nav-number">1.3.</span> <span class="nav-text">草稿</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Front-matter"><span class="nav-number">2.</span> <span class="nav-text">Front-matter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分类和标签"><span class="nav-number">2.1.</span> <span class="nav-text">分类和标签</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签插件（Tag-Plugins）"><span class="nav-number">3.</span> <span class="nav-text">标签插件（Tag Plugins）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引用块"><span class="nav-number">3.1.</span> <span class="nav-text">引用块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#样例"><span class="nav-number">3.1.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码块"><span class="nav-number">3.2.</span> <span class="nav-text">代码块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#样例-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">样例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#资源文件夹"><span class="nav-number">4.</span> <span class="nav-text">资源文件夹</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文章资源文件夹"><span class="nav-number">4.1.</span> <span class="nav-text">文章资源文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相对路径引用的标签插件"><span class="nav-number">4.2.</span> <span class="nav-text">相对路径引用的标签插件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器"><span class="nav-number">5.</span> <span class="nav-text">服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成文件"><span class="nav-number">6.</span> <span class="nav-text">生成文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#监视文件变动"><span class="nav-number">6.1.</span> <span class="nav-text">监视文件变动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成后部署"><span class="nav-number">6.2.</span> <span class="nav-text">生成后部署</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -687,7 +798,7 @@
       var disqus_shortname = 'charlesyin';
       var disqus_identifier = '2017/03/05/基本操作/';
 
-      var disqus_title = "hexo 写博客基本操作";
+      var disqus_title = "Hexo 基本操作";
 
 
       function run_disqus_script(disqus_script) {
