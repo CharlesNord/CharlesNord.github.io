@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://charlesnord.github.io/2017/03/05/%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</loc>
+    <lastmod>2017-03-05T07:16:48.000Z</lastmod>
+    <data>
+        <display>
+        <title>hexo 写博客基本操作</title>
+        <pubTime>2017-03-05T07:11:26.000Z</pubTime>
+        
+        <tag>hexo 命令</tag>
+         
+         
+           
+             
+              <breadCrumb title="网站配置相关" url="http://charlesnord.github.io/categories/%E7%BD%91%E7%AB%99%E9%85%8D%E7%BD%AE%E7%9B%B8%E5%85%B3/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://charlesnord.github.io/2017/03/05/osx-%E5%8D%A0%E7%94%A8/</loc>
     <lastmod>2017-03-05T06:54:09.000Z</lastmod>
     <data>
@@ -57,9 +77,9 @@
         <title>Hello World</title>
         <pubTime>2017-03-04T18:53:59.000Z</pubTime>
         
-        <tag>hexo command</tag>
-         
         <tag>hexo 命令</tag>
+         
+        <tag>hexo command</tag>
          
          
            
