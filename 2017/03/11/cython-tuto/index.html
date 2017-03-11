@@ -89,16 +89,22 @@
 
 
 
-<meta name="description" content="本文主要介绍了 cython 的基本用法，剩下的留待以后深入研究。">
+<meta name="description" content="用 Cython 加快 Python 循环速度本文翻译自该博客Cython 是 Python 语言到 C 语言的翻译器, 它能让你利用 Python 类似的语法达到接近 C 语言的运行速度。
+本文介绍了如何用 Cython 来对单一包含紧凑循环（”tight loops”）的 Python 函数进行加速。在后续的文章中将会介绍关于 Cython 更复杂的应用，例如包含各种函数和类的情况。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Cython 入门教程">
 <meta property="og:url" content="http://charlesnord.github.io/2017/03/11/cython-tuto/index.html">
 <meta property="og:site_name" content="计算机视觉笔记">
-<meta property="og:description" content="本文主要介绍了 cython 的基本用法，剩下的留待以后深入研究。">
-<meta property="og:updated_time" content="2017-03-11T15:02:58.000Z">
+<meta property="og:description" content="用 Cython 加快 Python 循环速度本文翻译自该博客Cython 是 Python 语言到 C 语言的翻译器, 它能让你利用 Python 类似的语法达到接近 C 语言的运行速度。
+本文介绍了如何用 Cython 来对单一包含紧凑循环（”tight loops”）的 Python 函数进行加速。在后续的文章中将会介绍关于 Cython 更复杂的应用，例如包含各种函数和类的情况。">
+<meta property="og:image" content="http://charlesnord.github.io/html.png">
+<meta property="og:image" content="http://charlesnord.github.io/html1.png">
+<meta property="og:updated_time" content="2017-03-11T15:20:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Cython 入门教程">
-<meta name="twitter:description" content="本文主要介绍了 cython 的基本用法，剩下的留待以后深入研究。">
+<meta name="twitter:description" content="用 Cython 加快 Python 循环速度本文翻译自该博客Cython 是 Python 语言到 C 语言的翻译器, 它能让你利用 Python 类似的语法达到接近 C 语言的运行速度。
+本文介绍了如何用 Cython 来对单一包含紧凑循环（”tight loops”）的 Python 函数进行加速。在后续的文章中将会介绍关于 Cython 更复杂的应用，例如包含各种函数和类的情况。">
+<meta name="twitter:image" content="http://charlesnord.github.io/html.png">
 
 
 
@@ -380,8 +386,55 @@
       
 
       
-        <p>本文主要介绍了 cython 的基本用法，剩下的留待以后深入研究。<br><a id="more"></a></p>
-<iframe src="http://nbviewer.jupyter.org/github/CharlesNord/cython/blob/master/Untitled.ipynb" width="700" height="400"></iframe>
+        <h2 id="用-Cython-加快-Python-循环速度"><a href="#用-Cython-加快-Python-循环速度" class="headerlink" title="用 Cython 加快 Python 循环速度"></a>用 Cython 加快 Python 循环速度</h2><p>本文翻译自该<a href="nealhughes.net/cython1">博客</a><br>Cython 是 Python 语言到 C 语言的翻译器, 它能让你利用 Python 类似的语法达到接近 C 语言的运行速度。</p>
+<p>本文介绍了如何用 Cython 来对单一包含紧凑循环（”tight loops”）的 Python 函数进行加速。在后续的文章中将会介绍关于 Cython 更复杂的应用，例如包含各种函数和类的情况。<br><a id="more"></a></p>
+<h2 id="什么时候该使用-Cython"><a href="#什么时候该使用-Cython" class="headerlink" title="什么时候该使用 Cython"></a>什么时候该使用 Cython</h2><p>你可以选择很多种方案来提升自己 Python 代码的运行速度，各种方案的具体对比请参考 <a href="https://lectures.quantecon.org/py/need_for_speed.html" target="_blank" rel="external">quantecon</a>。当然，你也可以选择另一种更快的语言来实现自己的项目，比如 Julia 或者干脆横下心来用 C 语言。</p>
+<p>Cython 静态编译并不是什么前沿技术，这是一项很成熟而且有良好文档支持的技术，能够应付复杂的大型项目。很多 Python 科学计算库后台采用了 Cython 代码，例如 <code>pandas</code> 和 <code>scikit-learn</code>。</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>我们这里的例程实现了一种<a href="https://en.wikipedia.org/wiki/Radial_basis_function" target="_blank" rel="external">径向基函数</a>的近似计算。</p>
+<p>$$<br>\hat{Y}_i = \sum_{j=1}^N \beta_j e^{(-(\theta\left\Vert X_i-X_j\right\Vert)^2)}<br>$$</p>
+<p>这个函数的输入为 $N$ 行 $D$ 列的数组 $X$，长度为 $N$ 的参数数组 $\beta$ 以及一个带宽(‘bandwidth’) 参数 $\theta$，返回长度为 $N$ 的数组 $\hat{Y}$。</p>
+<h2 id="Python-循环"><a href="#Python-循环" class="headerlink" title="Python 循环"></a>Python 循环</h2><p>下面是对上述函数的一个最初版本的 Python 实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> math <span class="keyword">import</span> exp</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">rbf_network</span><span class="params">(X, beta, theta)</span>:</span></div><div class="line">    N = X.shape[<span class="number">0</span>]</div><div class="line">    D = X.shape[<span class="number">1</span>]</div><div class="line">    Y = np.zeros(N)</div><div class="line">    </div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</div><div class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(N):</div><div class="line">            r = <span class="number">0</span></div><div class="line">            <span class="keyword">for</span> d <span class="keyword">in</span> range(D):</div><div class="line">                r += (X[j,d]-X[i,d])**<span class="number">2</span></div><div class="line">            r = r**<span class="number">0.5</span></div><div class="line">            Y[i] += beta[j]*exp(-(r*theta)**<span class="number">2</span>)</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> Y</div></pre></td></tr></table></figure>
+<p>接下来生成一些数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">D = <span class="number">5</span></div><div class="line">N = <span class="number">1000</span></div><div class="line">X = np.array([np.random.rand(D) <span class="keyword">for</span> d <span class="keyword">in</span> range(N)])</div><div class="line">beta = np.random.rand(N)</div><div class="line">theta = <span class="number">10</span></div></pre></td></tr></table></figure>
+<p>在 IPython 中测算运行时间</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">%timeit rbf_network(X, beta, theta) <span class="comment"># 5.15 s per loop</span></div></pre></td></tr></table></figure>
+<pre><code>1 loop, best of 3: 5.46 s per loop
+</code></pre><p>果然这些 Python 循环很慢！</p>
+<h2 id="scipy-interpolate-Rbf"><a href="#scipy-interpolate-Rbf" class="headerlink" title="scipy.interpolate.Rbf"></a>scipy.interpolate.Rbf</h2><p>这种情况下，我们幸运地找到了基于 numpy 的 RBF 实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> scipy.interpolate <span class="keyword">import</span> Rbf</div><div class="line">rbf = Rbf(X[:,<span class="number">0</span>],X[:,<span class="number">1</span>],X[:,<span class="number">2</span>],X[:,<span class="number">3</span>],X[:,<span class="number">4</span>], np.random.rand(N))</div><div class="line">Xtuple = tuple([X[:,i] <span class="keyword">for</span> i <span class="keyword">in</span> range(D)])</div><div class="line"></div><div class="line">%timeit rbf(Xtuple) <span class="comment">#336 ms per loop</span></div></pre></td></tr></table></figure>
+<pre><code>1 loop, best of 3: 342 ms per loop
+</code></pre><p>现在好多了！但是如果我们想把程序运行得快一点，但却找不到可用的函数库呢？</p>
+<h2 id="Cython"><a href="#Cython" class="headerlink" title="Cython"></a>Cython</h2><p>我们在文件 <code>fastloop.pyx</code> 中实现 Cython 版本的代码，其内容如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> math <span class="keyword">import</span> exp</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">rbf_network</span><span class="params">(double[:, :] X, double[:] beta, double theta)</span>:</span></div><div class="line">    cdef int N = X.shape[<span class="number">0</span>]</div><div class="line">    cdef int D = X.shape[<span class="number">1</span>]</div><div class="line">    cdef double[:] Y = np.zeros(N)</div><div class="line">    cdef int i, j, d</div><div class="line">    cdef double r = <span class="number">0</span></div><div class="line">    </div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</div><div class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(N):</div><div class="line">            r = <span class="number">0</span></div><div class="line">            <span class="keyword">for</span> d <span class="keyword">in</span> range(D):</div><div class="line">                r += (X[j, d]-X[i, d])**<span class="number">2</span></div><div class="line">            r = r**<span class="number">0.5</span></div><div class="line">            Y[i] += beta[j] * exp(-(r*theta)**<span class="number">2</span>)</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> Y</div></pre></td></tr></table></figure>
+<p>目前为止我们做的工作仅仅是在变量名前面增加了一些类型声明。对局部变量，我们采用 <code>cdef</code> 关键字。对 array 数组，我们采用 <a href="docs.cython.org/en/latest/src/userguide/memoryviews.html">‘memoryviews’</a> 来接受 numpy 数组输入。</p>
+<p>值得注意的是，在 <code>*.pyx</code> 文件中，你没有必要对变量进行声明，任何没有声明类型的变量都会留在 Python 中，而不会被翻译为 C 类型。</p>
+<p>为了编译上面的 <code>fastloop.pyx</code> 文件，我们需要写一个 <code>setup.py</code> 脚本，内容如下所示</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> distutils.core <span class="keyword">import</span> setup</div><div class="line"><span class="keyword">from</span> Cython.Build <span class="keyword">import</span> cythonize</div><div class="line"></div><div class="line">setup(name=<span class="string">'fastloop'</span>, ext_modules=cythonize(<span class="string">'fastloop.pyx'</span>),)</div></pre></td></tr></table></figure>
+<p>然后，我们在 terminal 中对 <code>fastloop.pyx</code> 进行编译，命令如下：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python setup.py build_ext --inplace</div></pre></td></tr></table></figure>
+<p>这个命令会生成 C 代码文件 <code>fastloop.c</code> 和一个编译好的 Python 库文件 <code>fastloop.so</code>。</p>
+<p>然后我们对这个库文件进行测试</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> fastloop <span class="keyword">import</span> rbf_network</div><div class="line">%timeit rbf_network(X, beta, theta) <span class="comment"># 87.3 ms per loop</span></div></pre></td></tr></table></figure>
+<pre><code>10 loops, best of 3: 84 ms per loop
+</code></pre><p>果然快了很多，但是我们还有提升空间。Cython 中有很多提升性能的小技巧。下面将介绍第一个，如果我们在 terminal 中输入</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cython fastloop.pyx <span class="_">-a</span></div></pre></td></tr></table></figure>
+<p>我们将生成一个 <code>fastloop.html</code> 文件，我们在浏览器中打开它。如下图所示<br><img src="html.png" alt="html"></p>
+<p>黄色高亮的语句仍然在使用 Python 运行，导致程序变慢。我们优化的目标是避免黄色高亮语句，尤其是在循环中。</p>
+<p>我们的第一个问题是依旧在使用 Python 版本的指数函数，应该把它替换成 C 版本的。 <code>math.h</code> 中的大多数函数都包含在了 Cython 的 <code>libc</code> 库中，所以只需要用下面的语句替换 <code>from math import exp</code> </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> libc.math <span class="keyword">import</span> exp</div></pre></td></tr></table></figure>
+<p>接下来我们需要增加一些编译指令（<a href="docs.cython.org/en/latest/src/reference/compilation.html#compiler-directives">compiler directives</a>），最简单的方法是将下面的这行增加到 <code>fastloop.pyx</code> 文件头部</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#cython: boundscheck=False, wraparound=False, nonecheck=False</span></div></pre></td></tr></table></figure>
+<p>通过把这些检测关掉，一旦程序出错，你只能得到段错误的提示，而不是像 python 中那种特别详细的信息，因此，最好是先把代码的错误排除干净，再添加该行。</p>
+<p>接下来我们可以考虑修改编译器参数（这些属于 C 语言的技巧）。当我们用 <code>gcc</code> 时，最重要的编译选项是 <code>-ffast-math</code>。在我有限的经验中，这可以大大提高程序速度，而不损失可靠性。为了实现这个改变，我们需要修改 <code>setup.py</code> 文件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> distutils.core <span class="keyword">import</span> setup</div><div class="line"><span class="keyword">from</span> distutils.extension <span class="keyword">import</span> Extension</div><div class="line"><span class="keyword">from</span> Cython.Distutils <span class="keyword">import</span> build_ext</div><div class="line"></div><div class="line">ext_modules=[ Extension(<span class="string">"fastloop"</span>,</div><div class="line">              [<span class="string">"fastloop.pyx"</span>],</div><div class="line">              libraries=[<span class="string">"m"</span>],</div><div class="line">              extra_compile_args=[<span class="string">"-ffast-math"</span>])]</div><div class="line">              </div><div class="line">setup(</div><div class="line">    name=<span class="string">'fastloop'</span>, </div><div class="line">    cmdclass=&#123;<span class="string">"build_ext"</span>: build_ext&#125;,</div><div class="line">    ext_modules=ext_modules)</div></pre></td></tr></table></figure>
+<p>现在再次运行 <code>cython fastloop.pyx -a</code>，我们看到循环中的语句已经不是用 Python 运行的了：<br><img src="html1.png" alt="html1"></p>
+<p>循环之外的黄色语句在这里对程序运行速度没有太大影响（如果需要在循环中多次调用这个函数，那么将会影响速度）。</p>
+<p>我们可以重新编译程序，并测速</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> fastloop <span class="keyword">import</span> rbf_network </div><div class="line">%timeit rbf_network(X, beta, theta) <span class="comment"># 21.7 ms per loop</span></div></pre></td></tr></table></figure>
+<pre><code>10 loops, best of 3: 22.4 ms per loop
+</code></pre><p>本文为 jupyter notebook 转换成 markdown 格式，也可以通过 <a href="http://nbviewer.jupyter.org/" target="_blank" rel="external">nbviewer</a> 将 <code>.ipynb</code> 文件转成网页文件。然后再把 <code>&lt;iframe src=&quot;your_URL&quot; width=&quot;700&quot; height=&quot;400&quot;&gt;&lt;/iframe&gt;</code> 插入文章需要引用的部分。</p>
+
       
     </div>
 
@@ -473,8 +526,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/bear.jpeg"
@@ -552,6 +614,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#用-Cython-加快-Python-循环速度"><span class="nav-number">1.</span> <span class="nav-text">用 Cython 加快 Python 循环速度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么时候该使用-Cython"><span class="nav-number">2.</span> <span class="nav-text">什么时候该使用 Cython</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子"><span class="nav-number">3.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-循环"><span class="nav-number">4.</span> <span class="nav-text">Python 循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scipy-interpolate-Rbf"><span class="nav-number">5.</span> <span class="nav-text">scipy.interpolate.Rbf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cython"><span class="nav-number">6.</span> <span class="nav-text">Cython</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
