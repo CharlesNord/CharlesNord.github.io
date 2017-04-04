@@ -1,48 +1,564 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   
+  
+    
+    <entry>
+      <title><![CDATA[感知机]]></title>
+      <url>http://charlesnord.github.io/2017/04/05/perceptron/</url>
+      <content type="html"><![CDATA[<p>空间中有两类线性可分的样本，感知机算法希望找出一条直线（超平面），恰好把这两类点分开。感知机原理很简单，这里研究二维平面的情况，不失一般性。</p>
+<a id="more"></a>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>样本集为 ${x^n}$，其中第 $t$ 个样本点为 $(x^t_1, x^t_2)$，标签为 $y^t$。分类直线用 $\theta = (\theta_0, \theta_1, \theta_2)$ 表示。该直线方程为：<br>$$<br>\theta_0 + \theta_1\cdot x_1 + \theta_2\cdot x_2 = 0<br>$$</p>
+<p>为了能用矩阵乘法表示，扩充 $x$，令其第 0 维值为1，即<br>$$<br>\theta^T\cdot x = [\theta_0, \theta_1, \theta_2]\cdot\left[<br>\begin{matrix}<br>1 \\<br>x_1 \\<br>x_2<br>\end{matrix}<br>\right]<br>$$</p>
+<p>约定：如果点 $(x^t_1, x^t_2)$ 在直线上方，则 $\theta^T\cdot x$ 大于0，对应的标签 $y^t=+1$，反之 $\theta^T\cdot x$ 小于0，$y^t=-1$。</p>
+<p>算法很简单，初始化 $\theta$ 为 0。用 $\theta$ 来分类样本，每遇到一个分类结果与标签不符的样本，则将 $\theta$ 加上该样本向量乘以它的标签（$\theta = \theta + y^t\cdot[1, x_1, x_2]^T$）。<br>至于这样做的原理可以看下图：<br>分类错的情况有两种：其一是 $\theta^T\cdot x^t<0$ 但="" $y^t="+1$。其二是" $\theta^t\cdot="" x^t="">0$ 但 $y^t=-1$。</0$></p>
+<p>站在向量点乘的角度，第一种情况说明 $\theta$ 与 $x^t$ 的夹角过大，优化目标是减小 $\theta$ 与 $x$ 的夹角，第二种情况则说明 $\theta$ 与 $x^t$ 的夹角过小，优化目标是增大 $\theta$ 与 $x$。针对这两种情况，如果分别用 $\theta$ 加上或减去误分点 $x^t$，则可以减小或增大 $\theta$ 与 $x^t$ 的夹角。因此可以采用 $\theta = \theta + y^t\cdot[1, x_1, x_2]^T$ 来更新 $\theta$。</p>
+<p>对应的算法如下图所示：<br><img src="/2017/04/05/perceptron/fig.png" alt="感知机学习算法" title="感知机学习算法"></p>
+<h2 id="收敛性证明"><a href="#收敛性证明" class="headerlink" title="收敛性证明"></a>收敛性证明</h2><p>如果两类点线性可分，那么一定存在<br>$$<br>\left| \theta^<em> \right| = 1<br>$$<br>使得对任意 $t=1,…,n$<br>$$<br>y^t\cdot(\theta^{\</em>T}\cdot x^t) \geq \gamma<br>$$<br>对于有限个样本，总能找到一个 $R$ 使得对任意 $t=1,…,n$ 有<br>$$<br>\left| x^t \right| \leq R<br>$$</p>
+<p>假设第 $k$ 次更新所使用的样本为 $x_t$，根据更新规则：</p>
+<p>$$<br>\begin{align}<br>\theta^{k+1}\cdot\theta^<em> &amp;= (\theta^k+y^t\cdot x^t)^T\cdot \theta^\</em> \\<br>&amp;= \theta^{kT}\cdot\theta^*+y^t\cdot \theta^{*T}\cdot x^t \\<br>&amp;\geq \theta^{kT}\cdot\theta^* + \gamma<br>\end{align}<br>$$</p>
+<p>将 $\theta^1$ 初始化为 0 向量，则有：<br>$$<br>\theta^{k+1}\cdot\theta^* \geq k\gamma<br>$$<br>而两个向量的点乘一定小于等于它们模的乘积，且已知 $\theta^*$ 的模为1，故：<br>$$<br>\theta^{k+1} \geq k\gamma<br>$$</p>
+]]></content>
+      
+        
+    </entry>
     
     <entry>
       <title><![CDATA[旋转矩阵]]></title>
-      <url>%2F2017%2F04%2F01%2Frotation%2F</url>
-      <content type="text"><![CDATA[问题简述本文研究几何变换矩阵，以及在 OpenCV 中实现图像的旋转、放缩。 推导首先将问题简化：在二维坐标系中，将某点绕坐标原点旋转一定的角度，已知旋转前的坐标 $(x_0,y_0)$ 和旋转角 $\theta$，求旋转后的坐标 $(x,y)$。 如上图所示，旋转前后的目标点都用蓝色箭头表示，旋转前其坐标为 $(x, y)$ （推导过程为了区分，采用 $(x_0, y_0)$ ）。旋转前坐标系用黑色实线表示，为了辅助推导，图中作出了旋转后的坐标系，用红色虚线表示（可以想象成红色坐标系固连在点上，随着点一起旋转）。 原坐标系基底为:$$\vec b_1 = \left(\begin{matrix}1 \\0\end{matrix}\right) \qquad\vec b_2 = \left(\begin{matrix}0 \\1\end{matrix}\right)$$ 原坐标表示成基底相加的形式：$$\left(\begin{matrix}x_0 \\y_0\end{matrix}\right)=x_0\cdot\vec b_1+y_0\cdot\vec b_2 =x_0\cdot\left(\begin{matrix}1 \\0\end{matrix}\right)+y_0\cdot\left(\begin{matrix}0 \\1\end{matrix}\right)$$ 从图中可以看到，旋转后的点与红色坐标系的相对位置没有改变，仍然等于 $x_0$ 个横向基底加 $y_0$ 个纵向基底。因此，只要求出红色坐标系的横向基底和纵向基底，即可获得旋转后的点在原坐标系中的坐标。根据三角函数，很容易得到这一组新的基底：$$\vec {b_1’} = \left(\begin{matrix}cos\ \theta \\sin\ \theta\end{matrix}\right) \qquad\vec {b_2’} = \left(\begin{matrix}-sin\ \theta \\cos\ \theta\end{matrix}\right)$$因此，旋转后的点在原坐标系中的坐标为：$$\left(\begin{matrix}x \\y\end{matrix}\right)=x_0\cdot\vec {b_1’}+y_0\cdot\vec {b_2’} =x_0\cdot\left(\begin{matrix}cos\ \theta \\sin\ \theta\end{matrix}\right)+y_0\cdot\left(\begin{matrix}-sin\ \theta \\cos\ \theta\end{matrix}\right)$$ 转换成矩阵乘积的形式为：$$\left(\begin{matrix}x \\y\end{matrix}\right) = \left[\begin{matrix}cos\ \theta &amp; -sin\ \theta \\sin\ \theta &amp; cos\ \theta\end{matrix}\right]\cdot\left(\begin{matrix}x_0 \\y_0\end{matrix}\right)$$ OpenCV 旋转图片若要在 OpenCV 中实现图片旋转，首先需要通过调用 cv2.getRotationMatrix2D 生成旋转矩阵，事实上，该矩阵同时涵盖了以任意点为中心的旋转（上一部分仅仅考虑了旋转中心为坐标原点的情况）+放缩变换。 12345img = cv2.imread('messi5.jpg',0)rows,cols = img.shapeM = cv2.getRotationMatrix2D((cols/2,rows/2),90,1)dst = cv2.warpAffine(img,M,(cols,rows)) cv2.getRotationMatrix2D 传入的参数分别为：旋转中心$(x_0, y_0)$，旋转角度 $\theta$（非弧度制），放缩量 $scale$。生成如下所示的矩阵：$$\left[\begin{matrix}\alpha &amp; \beta &amp; (1-\alpha)\cdot x_0-\beta y_0 \\-\beta &amp; \alpha &amp; \beta x_0+(1-\alpha)\cdot y_0\end{matrix}\right]$$ 其中：$$\alpha = scale\cdot cos\theta \\\beta = scale\cdot sin\theta$$ 分析上述矩阵中的元素，可以看出，$\alpha$、$\beta$ 是负责旋转的量。但是它的负号位置与第一部分推导的不同，这是因为图像坐标系不是标准坐标系，图像坐标系中规定图像左上角为坐标原点，水平向右为 $x$ 轴正方向，竖直向下为 $y$ 轴正方向。那么，OpenCV 又是如何把放缩和以任意点为中心的旋转整合到同一矩阵的呢？ 其实可以把上述的复杂变换分解成几个简单变换：平移、放缩、旋转。 平移旋转中心不是坐标原点的情况（i.e $(x_0, y_0)$），可以先将坐标原点临时平移到指定的旋转中心，然后进行旋转变换，再将坐标原点平移回去。可以想象成月球绕着地球转，先求出月球旋转某个角度后相对于地球的坐标，再根据地球的位置，求出月球相对于太阳的坐标。 平移矩阵为：$$T =\left[\begin{matrix}1 &amp; 0 &amp; -x_0 \\0 &amp; 1 &amp; -y_0 \\0 &amp; 0 &amp; 1\end{matrix}\right]$$最后一行的目的是辅助计算，输入的坐标也增加一个维度，增加的维度上值始终为 1，例如 $[x, y]^T$ 变为 $[x, y, 1]^T$。 平移加放缩坐标原点上的放缩矩阵为： $$S =\left[\begin{matrix}scale &amp; 0 &amp; 0 \\0 &amp; scale &amp; 0 \\0 &amp; 0 &amp; 1\end{matrix}\right]$$ 若放缩中心不是坐标原点，则先将坐标系平移到放缩中心，放缩后再移回原点。这个过程可以用矩阵乘法表示： $$T’ST =\left[\begin{matrix}1 &amp; 0 &amp; x_0 \\0 &amp; 1 &amp; y_0 \\0 &amp; 0 &amp; 1\end{matrix}\right]\cdot\left[\begin{matrix}scale &amp; 0 &amp; 0 \\0 &amp; scale &amp; 0 \\0 &amp; 0 &amp; 1\end{matrix}\right]\cdot\left[\begin{matrix}1 &amp; 0 &amp; -x_0 \\0 &amp; 1 &amp; -y_0 \\0 &amp; 0 &amp; 1\end{matrix}\right]$$ 平移加放缩加旋转在上一节的过程中，移回坐标原点前，先进行一次旋转操作，就得到了平移加放缩加旋转的变换矩阵，也就是 OpenCV 中的变换矩阵。 图像坐标系中以坐标原点为中心的旋转矩阵为： $$R =\left[\begin{matrix}cos\ \theta &amp; sin\ \theta &amp; 0 \\-sin\ \theta &amp; cos\ \theta &amp; 0 \\0 &amp; 0 &amp; 1\end{matrix}\right]$$ 因此，总的旋转矩阵为： $$T’RST =\left[\begin{matrix}1 &amp; 0 &amp; x_0 \\0 &amp; 1 &amp; y_0 \\0 &amp; 0 &amp; 1\end{matrix}\right]\cdot\left[\begin{matrix}cos\ \theta &amp; sin\ \theta &amp; 0 \\-sin\ \theta &amp; cos\ \theta &amp; 0 \\0 &amp; 0 &amp; 1\end{matrix}\right]\cdot\left[\begin{matrix}scale &amp; 0 &amp; 0 \\0 &amp; scale &amp; 0 \\0 &amp; 0 &amp; 1\end{matrix}\right]\cdot\left[\begin{matrix}1 &amp; 0 &amp; -x_0 \\0 &amp; 1 &amp; -y_0 \\0 &amp; 0 &amp; 1\end{matrix}\right]$$ 也就是： $$\left[\begin{matrix}scale\cdot cos\ \theta &amp; scale\cdot sin\ \theta &amp; x_0\cdot(1-scale\cdot cos\ \theta)-y_0\cdot scale\cdot sin\ \theta \\-scale\cdot sin\ \theta &amp; scale\cdot cos\ \theta &amp; y_0\cdot(1-scale\cdot cos\ \theta)+x_0\cdot scale\cdot sin\ \theta \\0 &amp; 0 &amp; 1\end{matrix}\right]$$ 令 $$\alpha = scale\cdot cos\theta \\\beta = scale\cdot sin\theta$$ 得到$$\left[\begin{matrix}\alpha &amp; \beta &amp; (1-\alpha)\cdot x_0-\beta y_0 \\-\beta &amp; \alpha &amp; \beta x_0+(1-\alpha)\cdot y_0 \\0 &amp; 0 &amp; 1\end{matrix}\right]$$前两行与 OpenCV 文档中完全相同。 代码可以直接调用 OpenCV 的函数对图片进行旋转，如下代码实现了将某幅图片绕其几何中心逆时针旋转 90°，并保持原尺寸。 1234567891011import cv2import matplotlib.pyplot as pltimg = cv2.imread('cat.jpg')rows,cols = img.shape[0:2] # 图像的尺寸M = cv2.getRotationMatrix2D((cols/2,rows/2),90,1) # 注意几何中心的坐标与尺寸的关系，横坐标对应列，纵坐标对应行dst = cv2.warpAffine(img,M,(rows,cols)) # 注意目标图像的尺寸，这里 rows 和 cols 代表的是新图像在横、纵坐标方向的长度，不是原图中的行、列 # 显示图片dst = dst[:,:,::-1] # matplotlib 通道顺序为 RGB 而 OpenCV 通道顺序为 BGR 故在这里调整通道顺序plt.imshow(dst)plt.show() 参考资料Geometric Transformations of Images]]></content>
+      <url>http://charlesnord.github.io/2017/04/01/rotation/</url>
+      <content type="html"><![CDATA[<h2 id="问题简述"><a href="#问题简述" class="headerlink" title="问题简述"></a>问题简述</h2><p>本文研究几何变换矩阵，以及在 OpenCV 中实现图像的旋转、放缩。</p>
+<a id="more"></a>
+<img src="/2017/04/01/rotation/rotation.png" alt="旋转 $\theta$ 度" title="旋转 $\theta$ 度">
+<h2 id="推导"><a href="#推导" class="headerlink" title="推导"></a>推导</h2><p>首先将问题简化：在二维坐标系中，将某点绕坐标原点旋转一定的角度，已知旋转前的坐标 $(x_0,y_0)$ 和旋转角 $\theta$，求旋转后的坐标 $(x,y)$。</p>
+<p>如上图所示，旋转前后的目标点都用蓝色箭头表示，旋转前其坐标为 $(x, y)$ （推导过程为了区分，采用 $(x_0, y_0)$ ）。旋转前坐标系用黑色实线表示，为了辅助推导，图中作出了旋转后的坐标系，用红色虚线表示（可以想象成红色坐标系固连在点上，随着点一起旋转）。</p>
+<p>原坐标系基底为:<br>$$<br>\vec b_1 = \left(<br>\begin{matrix}<br>1 \\<br>0<br>\end{matrix}<br>\right) \qquad<br>\vec b_2 = \left(<br>\begin{matrix}<br>0 \\<br>1<br>\end{matrix}<br>\right)<br>$$</p>
+<p>原坐标表示成基底相加的形式：<br>$$<br>\left(<br>\begin{matrix}<br>x_0 \\<br>y_0<br>\end{matrix}<br>\right)=x_0\cdot\vec b_1+y_0\cdot\vec b_2 =<br>x_0\cdot\left(\begin{matrix}<br>1 \\<br>0<br>\end{matrix}\right)+y_0\cdot\left(\begin{matrix}<br>0 \\<br>1<br>\end{matrix}\right)<br>$$</p>
+<p>从图中可以看到，旋转后的点与红色坐标系的相对位置没有改变，仍然等于 $x_0$ 个横向基底加 $y_0$ 个纵向基底。因此，只要求出红色坐标系的横向基底和纵向基底，即可获得旋转后的点在原坐标系中的坐标。根据三角函数，很容易得到这一组新的基底：<br>$$<br>\vec {b_1’} = \left(\begin{matrix}<br>cos\ \theta \\<br>sin\ \theta<br>\end{matrix}\right) \qquad<br>\vec {b_2’} = \left(\begin{matrix}<br>-sin\ \theta \\<br>cos\ \theta<br>\end{matrix}\right)<br>$$<br>因此，旋转后的点在原坐标系中的坐标为：<br>$$<br>\left(<br>\begin{matrix}<br>x \\<br>y<br>\end{matrix}<br>\right)=x_0\cdot\vec {b_1’}+y_0\cdot\vec {b_2’} =<br>x_0\cdot\left(\begin{matrix}<br>cos\ \theta \\<br>sin\ \theta<br>\end{matrix}\right)+y_0\cdot\left(\begin{matrix}<br>-sin\ \theta \\<br>cos\ \theta<br>\end{matrix}\right)<br>$$</p>
+<p>转换成矩阵乘积的形式为：<br>$$<br>\left(<br>\begin{matrix}<br>x \\<br>y<br>\end{matrix}<br>\right) = \left[\begin{matrix}<br>cos\ \theta &amp; -sin\ \theta \\<br>sin\ \theta &amp; cos\ \theta<br>\end{matrix}\right]\cdot\left(\begin{matrix}<br>x_0 \\<br>y_0<br>\end{matrix}\right)<br>$$</p>
+<h2 id="OpenCV-旋转图片"><a href="#OpenCV-旋转图片" class="headerlink" title="OpenCV 旋转图片"></a>OpenCV 旋转图片</h2><p>若要在 OpenCV 中实现图片旋转，首先需要通过调用 <code>cv2.getRotationMatrix2D</code> 生成旋转矩阵，事实上，该矩阵同时涵盖了以任意点为中心的旋转（上一部分仅仅考虑了旋转中心为坐标原点的情况）+放缩变换。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">img = cv2.imread(<span class="string">'messi5.jpg'</span>,<span class="number">0</span>)</div><div class="line">rows,cols = img.shape</div><div class="line">M = cv2.getRotationMatrix2D((cols/<span class="number">2</span>,rows/<span class="number">2</span>),<span class="number">90</span>,<span class="number">1</span>)</div><div class="line">dst = cv2.warpAffine(img,M,(cols,rows))</div></pre></td></tr></table></figure>
+<p><code>cv2.getRotationMatrix2D</code> 传入的参数分别为：旋转中心$(x_0, y_0)$，旋转角度 $\theta$（非弧度制），放缩量 $scale$。生成如下所示的矩阵：<br>$$<br>\left[\begin{matrix}<br>\alpha &amp; \beta &amp; (1-\alpha)\cdot x_0-\beta y_0 \\<br>-\beta &amp; \alpha &amp; \beta x_0+(1-\alpha)\cdot y_0<br>\end{matrix}\right]<br>$$</p>
+<p>其中：<br>$$<br>\alpha = scale\cdot cos\theta \\<br>\beta = scale\cdot sin\theta<br>$$</p>
+<p>分析上述矩阵中的元素，可以看出，$\alpha$、$\beta$ 是负责旋转的量。但是它的负号位置与第一部分推导的不同，这是因为图像坐标系不是标准坐标系，图像坐标系中规定图像左上角为坐标原点，水平向右为 $x$ 轴正方向，竖直向下为 $y$ 轴正方向。那么，OpenCV 又是如何把放缩和以任意点为中心的旋转整合到同一矩阵的呢？</p>
+<p>其实可以把上述的复杂变换分解成几个简单变换：平移、放缩、旋转。</p>
+<h3 id="平移"><a href="#平移" class="headerlink" title="平移"></a>平移</h3><p>旋转中心不是坐标原点的情况（i.e $(x_0, y_0)$），可以先将坐标原点临时平移到指定的旋转中心，然后进行旋转变换，再将坐标原点平移回去。可以想象成月球绕着地球转，先求出月球旋转某个角度后相对于地球的坐标，再根据地球的位置，求出月球相对于太阳的坐标。</p>
+<p>平移矩阵为：<br>$$<br>T =<br>\left[\begin{matrix}<br>1 &amp; 0 &amp; -x_0 \\<br>0 &amp; 1 &amp; -y_0 \\<br>0 &amp; 0 &amp; 1<br>\end{matrix}\right]<br>$$<br>最后一行的目的是辅助计算，输入的坐标也增加一个维度，增加的维度上值始终为 1，例如 $[x, y]^T$ 变为 $[x, y, 1]^T$。</p>
+<h3 id="平移加放缩"><a href="#平移加放缩" class="headerlink" title="平移加放缩"></a>平移加放缩</h3><p>坐标原点上的放缩矩阵为：</p>
+<p>$$<br>S =<br>\left[\begin{matrix}<br>scale &amp; 0 &amp; 0 \\<br>0 &amp; scale &amp; 0 \\<br>0 &amp; 0 &amp; 1<br>\end{matrix}\right]<br>$$</p>
+<p>若放缩中心不是坐标原点，则先将坐标系平移到放缩中心，放缩后再移回原点。这个过程可以用矩阵乘法表示：</p>
+<p>$$<br>T’ST =<br>\left[\begin{matrix}<br>1 &amp; 0 &amp; x_0 \\<br>0 &amp; 1 &amp; y_0 \\<br>0 &amp; 0 &amp; 1<br>\end{matrix}\right]<br>\cdot<br>\left[\begin{matrix}<br>scale &amp; 0 &amp; 0 \\<br>0 &amp; scale &amp; 0 \\<br>0 &amp; 0 &amp; 1<br>\end{matrix}\right]<br>\cdot<br>\left[\begin{matrix}<br>1 &amp; 0 &amp; -x_0 \\<br>0 &amp; 1 &amp; -y_0 \\<br>0 &amp; 0 &amp; 1<br>\end{matrix}\right]<br>$$</p>
+<h3 id="平移加放缩加旋转"><a href="#平移加放缩加旋转" class="headerlink" title="平移加放缩加旋转"></a>平移加放缩加旋转</h3><p>在上一节的过程中，移回坐标原点前，先进行一次旋转操作，就得到了平移加放缩加旋转的变换矩阵，也就是 OpenCV 中的变换矩阵。</p>
+<p><strong>图像坐标系中</strong>以坐标原点为中心的旋转矩阵为：</p>
+<p>$$<br>R =<br>\left[\begin{matrix}<br>cos\ \theta &amp; sin\ \theta &amp; 0 \\<br>-sin\ \theta &amp; cos\ \theta &amp; 0 \\<br>0 &amp; 0 &amp; 1<br>\end{matrix}\right]<br>$$</p>
+<p>因此，总的旋转矩阵为：</p>
+<p>$$<br>T’RST =<br>\left[\begin{matrix}<br>1 &amp; 0 &amp; x_0 \\<br>0 &amp; 1 &amp; y_0 \\<br>0 &amp; 0 &amp; 1<br>\end{matrix}\right]<br>\cdot<br>\left[\begin{matrix}<br>cos\ \theta &amp; sin\ \theta &amp; 0 \\<br>-sin\ \theta &amp; cos\ \theta &amp; 0 \\<br>0 &amp; 0 &amp; 1<br>\end{matrix}\right]<br>\cdot<br>\left[\begin{matrix}<br>scale &amp; 0 &amp; 0 \\<br>0 &amp; scale &amp; 0 \\<br>0 &amp; 0 &amp; 1<br>\end{matrix}\right]<br>\cdot<br>\left[\begin{matrix}<br>1 &amp; 0 &amp; -x_0 \\<br>0 &amp; 1 &amp; -y_0 \\<br>0 &amp; 0 &amp; 1<br>\end{matrix}\right]<br>$$</p>
+<p>也就是：</p>
+<p>$$<br>\left[\begin{matrix}<br>scale\cdot cos\ \theta &amp; scale\cdot sin\ \theta &amp; x_0\cdot(1-scale\cdot cos\ \theta)-y_0\cdot scale\cdot sin\ \theta \\<br>-scale\cdot sin\ \theta &amp; scale\cdot cos\ \theta &amp; y_0\cdot(1-scale\cdot cos\ \theta)+x_0\cdot scale\cdot sin\ \theta \\<br>0 &amp; 0 &amp; 1<br>\end{matrix}\right]<br>$$</p>
+<p>令</p>
+<p>$$<br>\alpha = scale\cdot cos\theta \\<br>\beta = scale\cdot sin\theta<br>$$</p>
+<p>得到<br>$$<br>\left[\begin{matrix}<br>\alpha &amp; \beta &amp; (1-\alpha)\cdot x_0-\beta y_0 \\<br>-\beta &amp; \alpha &amp; \beta x_0+(1-\alpha)\cdot y_0 \\<br>0 &amp; 0 &amp; 1<br>\end{matrix}\right]<br>$$<br>前两行与 OpenCV 文档中完全相同。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>可以直接调用 OpenCV 的函数对图片进行旋转，如下代码实现了将某幅图片绕其几何中心逆时针旋转 90°，并保持原尺寸。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> cv2</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line">img = cv2.imread(<span class="string">'cat.jpg'</span>)</div><div class="line">rows,cols = img.shape[<span class="number">0</span>:<span class="number">2</span>] <span class="comment"># 图像的尺寸</span></div><div class="line">M = cv2.getRotationMatrix2D((cols/<span class="number">2</span>,rows/<span class="number">2</span>),<span class="number">90</span>,<span class="number">1</span>) <span class="comment"># 注意几何中心的坐标与尺寸的关系，横坐标对应列，纵坐标对应行</span></div><div class="line">dst = cv2.warpAffine(img,M,(rows,cols)) <span class="comment"># 注意目标图像的尺寸，这里 rows 和 cols 代表的是新图像在横、纵坐标方向的长度，不是原图中的行、列</span></div><div class="line"></div><div class="line"> <span class="comment"># 显示图片</span></div><div class="line">dst = dst[:,:,::<span class="number">-1</span>] <span class="comment"># matplotlib 通道顺序为 RGB 而 OpenCV 通道顺序为 BGR 故在这里调整通道顺序</span></div><div class="line">plt.imshow(dst)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://docs.opencv.org/trunk/da/d6e/tutorial_py_geometric_transformations.html" target="_blank" rel="external">Geometric Transformations of Images</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 几何变换 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 旋转矩阵 </tag>
+            
+            <tag> 旋转图像 </tag>
+            
+        </tags>
+        
     </entry>
-
     
     <entry>
       <title><![CDATA[Cython 入门教程]]></title>
-      <url>%2F2017%2F03%2F11%2Fcython-tuto%2F</url>
-      <content type="text"><![CDATA[用 Cython 加快 Python 循环速度本文翻译自该博客Cython 是 Python 语言到 C 语言的翻译器, 它能让你利用 Python 类似的语法达到接近 C 语言的运行速度。 本文介绍了如何用 Cython 来对单一包含紧凑循环（”tight loops”）的 Python 函数进行加速。在后续的文章中将会介绍关于 Cython 更复杂的应用，例如包含各种函数和类的情况。 什么时候该使用 Cython你可以选择很多种方案来提升自己 Python 代码的运行速度，各种方案的具体对比请参考 quantecon。当然，你也可以选择另一种更快的语言来实现自己的项目，比如 Julia 或者干脆横下心来用 C 语言。 Cython 静态编译并不是什么前沿技术，这是一项很成熟而且有良好文档支持的技术，能够应付复杂的大型项目。很多 Python 科学计算库后台采用了 Cython 代码，例如 pandas 和 scikit-learn。 例子我们这里的例程实现了一种径向基函数的近似计算。 $$\hat{Y}_i = \sum_{j=1}^N \beta_j e^{(-(\theta\left\Vert X_i-X_j\right\Vert)^2)}$$ 这个函数的输入为 $N$ 行 $D$ 列的数组 $X$，长度为 $N$ 的参数数组 $\beta$ 以及一个带宽(‘bandwidth’) 参数 $\theta$，返回长度为 $N$ 的数组 $\hat{Y}$。 Python 循环下面是对上述函数的一个最初版本的 Python 实现。 1234567891011121314151617from math import expimport numpy as npdef rbf_network(X, beta, theta): N = X.shape[0] D = X.shape[1] Y = np.zeros(N) for i in range(N): for j in range(N): r = 0 for d in range(D): r += (X[j,d]-X[i,d])**2 r = r**0.5 Y[i] += beta[j]*exp(-(r*theta)**2) return Y 接下来生成一些数据： 123456import numpy as npD = 5N = 1000X = np.array([np.random.rand(D) for d in range(N)])beta = np.random.rand(N)theta = 10 在 IPython 中测算运行时间 1%timeit rbf_network(X, beta, theta) # 5.15 s per loop 1 loop, best of 3: 5.46 s per loop 果然这些 Python 循环很慢！ scipy.interpolate.Rbf这种情况下，我们幸运地找到了基于 numpy 的 RBF 实现。 12345from scipy.interpolate import Rbfrbf = Rbf(X[:,0],X[:,1],X[:,2],X[:,3],X[:,4], np.random.rand(N))Xtuple = tuple([X[:,i] for i in range(D)])%timeit rbf(Xtuple) #336 ms per loop 1 loop, best of 3: 342 ms per loop 现在好多了！但是如果我们想把程序运行得快一点，但却找不到可用的函数库呢？ Cython我们在文件 fastloop.pyx 中实现 Cython 版本的代码，其内容如下 12345678910111213141516171819from math import expimport numpy as npdef rbf_network(double[:, :] X, double[:] beta, double theta): cdef int N = X.shape[0] cdef int D = X.shape[1] cdef double[:] Y = np.zeros(N) cdef int i, j, d cdef double r = 0 for i in range(N): for j in range(N): r = 0 for d in range(D): r += (X[j, d]-X[i, d])**2 r = r**0.5 Y[i] += beta[j] * exp(-(r*theta)**2) return Y 目前为止我们做的工作仅仅是在变量名前面增加了一些类型声明。对局部变量，我们采用 cdef 关键字。对 array 数组，我们采用 ‘memoryviews’ 来接受 numpy 数组输入。 值得注意的是，在 *.pyx 文件中，你没有必要对变量进行声明，任何没有声明类型的变量都会留在 Python 中，而不会被翻译为 C 类型。 为了编译上面的 fastloop.pyx 文件，我们需要写一个 setup.py 脚本，内容如下所示 1234from distutils.core import setupfrom Cython.Build import cythonizesetup(name='fastloop', ext_modules=cythonize('fastloop.pyx'),) 然后，我们在 terminal 中对 fastloop.pyx 进行编译，命令如下： 1python setup.py build_ext --inplace 这个命令会生成 C 代码文件 fastloop.c 和一个编译好的 Python 库文件 fastloop.so。 然后我们对这个库文件进行测试 12from fastloop import rbf_network%timeit rbf_network(X, beta, theta) # 87.3 ms per loop 10 loops, best of 3: 84 ms per loop 果然快了很多，但是我们还有提升空间。Cython 中有很多提升性能的小技巧。下面将介绍第一个，如果我们在 terminal 中输入 1cython fastloop.pyx -a 我们将生成一个 fastloop.html 文件，我们在浏览器中打开它。如下图所示 黄色高亮的语句仍然在使用 Python 运行，导致程序变慢。我们优化的目标是避免黄色高亮语句，尤其是在循环中。 我们的第一个问题是依旧在使用 Python 版本的指数函数，应该把它替换成 C 版本的。 math.h 中的大多数函数都包含在了 Cython 的 libc 库中，所以只需要用下面的语句替换 from math import exp 1from libc.math import exp 接下来我们需要增加一些编译指令（compiler directives），最简单的方法是将下面的这行增加到 fastloop.pyx 文件头部 1#cython: boundscheck=False, wraparound=False, nonecheck=False 通过把这些检测关掉，一旦程序出错，你只能得到段错误的提示，而不是像 python 中那种特别详细的信息，因此，最好是先把代码的错误排除干净，再添加该行。 接下来我们可以考虑修改编译器参数（这些属于 C 语言的技巧）。当我们用 gcc 时，最重要的编译选项是 -ffast-math。在我有限的经验中，这可以大大提高程序速度，而不损失可靠性。为了实现这个改变，我们需要修改 setup.py 文件。 12345678910111213from distutils.core import setupfrom distutils.extension import Extensionfrom Cython.Distutils import build_extext_modules=[ Extension("fastloop", ["fastloop.pyx"], libraries=["m"], extra_compile_args=["-ffast-math"])] setup( name='fastloop', cmdclass=&#123;"build_ext": build_ext&#125;, ext_modules=ext_modules) 现在再次运行 cython fastloop.pyx -a，我们看到循环中的语句已经不是用 Python 运行的了： 循环之外的黄色语句在这里对程序运行速度没有太大影响（如果需要在循环中多次调用这个函数，那么将会影响速度）。 我们可以重新编译程序，并测速 12from fastloop import rbf_network %timeit rbf_network(X, beta, theta) # 21.7 ms per loop 10 loops, best of 3: 22.4 ms per loop 本文为 jupyter notebook 转换成 markdown 格式，也可以通过 nbviewer 将 .ipynb 文件转成网页文件。然后再把 &lt;iframe src=&quot;your_URL&quot; width=&quot;700&quot; height=&quot;400&quot;&gt;&lt;/iframe&gt; 插入文章需要引用的部分。]]></content>
+      <url>http://charlesnord.github.io/2017/03/11/cython-tuto/</url>
+      <content type="html"><![CDATA[<h2 id="用-Cython-加快-Python-循环速度"><a href="#用-Cython-加快-Python-循环速度" class="headerlink" title="用 Cython 加快 Python 循环速度"></a>用 Cython 加快 Python 循环速度</h2><p>本文翻译自该<a href="nealhughes.net/cython1">博客</a><br>Cython 是 Python 语言到 C 语言的翻译器, 它能让你利用 Python 类似的语法达到接近 C 语言的运行速度。</p>
+<p>本文介绍了如何用 Cython 来对单一包含紧凑循环（”tight loops”）的 Python 函数进行加速。在后续的文章中将会介绍关于 Cython 更复杂的应用，例如包含各种函数和类的情况。<br><a id="more"></a></p>
+<h2 id="什么时候该使用-Cython"><a href="#什么时候该使用-Cython" class="headerlink" title="什么时候该使用 Cython"></a>什么时候该使用 Cython</h2><p>你可以选择很多种方案来提升自己 Python 代码的运行速度，各种方案的具体对比请参考 <a href="https://lectures.quantecon.org/py/need_for_speed.html" target="_blank" rel="external">quantecon</a>。当然，你也可以选择另一种更快的语言来实现自己的项目，比如 Julia 或者干脆横下心来用 C 语言。</p>
+<p>Cython 静态编译并不是什么前沿技术，这是一项很成熟而且有良好文档支持的技术，能够应付复杂的大型项目。很多 Python 科学计算库后台采用了 Cython 代码，例如 <code>pandas</code> 和 <code>scikit-learn</code>。</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>我们这里的例程实现了一种<a href="https://en.wikipedia.org/wiki/Radial_basis_function" target="_blank" rel="external">径向基函数</a>的近似计算。</p>
+<p>$$<br>\hat{Y}_i = \sum_{j=1}^N \beta_j e^{(-(\theta\left\Vert X_i-X_j\right\Vert)^2)}<br>$$</p>
+<p>这个函数的输入为 $N$ 行 $D$ 列的数组 $X$，长度为 $N$ 的参数数组 $\beta$ 以及一个带宽(‘bandwidth’) 参数 $\theta$，返回长度为 $N$ 的数组 $\hat{Y}$。</p>
+<h2 id="Python-循环"><a href="#Python-循环" class="headerlink" title="Python 循环"></a>Python 循环</h2><p>下面是对上述函数的一个最初版本的 Python 实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> math <span class="keyword">import</span> exp</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">rbf_network</span><span class="params">(X, beta, theta)</span>:</span></div><div class="line">    N = X.shape[<span class="number">0</span>]</div><div class="line">    D = X.shape[<span class="number">1</span>]</div><div class="line">    Y = np.zeros(N)</div><div class="line">    </div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</div><div class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(N):</div><div class="line">            r = <span class="number">0</span></div><div class="line">            <span class="keyword">for</span> d <span class="keyword">in</span> range(D):</div><div class="line">                r += (X[j,d]-X[i,d])**<span class="number">2</span></div><div class="line">            r = r**<span class="number">0.5</span></div><div class="line">            Y[i] += beta[j]*exp(-(r*theta)**<span class="number">2</span>)</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> Y</div></pre></td></tr></table></figure>
+<p>接下来生成一些数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">D = <span class="number">5</span></div><div class="line">N = <span class="number">1000</span></div><div class="line">X = np.array([np.random.rand(D) <span class="keyword">for</span> d <span class="keyword">in</span> range(N)])</div><div class="line">beta = np.random.rand(N)</div><div class="line">theta = <span class="number">10</span></div></pre></td></tr></table></figure>
+<p>在 IPython 中测算运行时间</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">%timeit rbf_network(X, beta, theta) <span class="comment"># 5.15 s per loop</span></div></pre></td></tr></table></figure>
+<pre><code>1 loop, best of 3: 5.46 s per loop
+</code></pre><p>果然这些 Python 循环很慢！</p>
+<h2 id="scipy-interpolate-Rbf"><a href="#scipy-interpolate-Rbf" class="headerlink" title="scipy.interpolate.Rbf"></a>scipy.interpolate.Rbf</h2><p>这种情况下，我们幸运地找到了基于 numpy 的 RBF 实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> scipy.interpolate <span class="keyword">import</span> Rbf</div><div class="line">rbf = Rbf(X[:,<span class="number">0</span>],X[:,<span class="number">1</span>],X[:,<span class="number">2</span>],X[:,<span class="number">3</span>],X[:,<span class="number">4</span>], np.random.rand(N))</div><div class="line">Xtuple = tuple([X[:,i] <span class="keyword">for</span> i <span class="keyword">in</span> range(D)])</div><div class="line"></div><div class="line">%timeit rbf(Xtuple) <span class="comment">#336 ms per loop</span></div></pre></td></tr></table></figure>
+<pre><code>1 loop, best of 3: 342 ms per loop
+</code></pre><p>现在好多了！但是如果我们想把程序运行得快一点，但却找不到可用的函数库呢？</p>
+<h2 id="Cython"><a href="#Cython" class="headerlink" title="Cython"></a>Cython</h2><p>我们在文件 <code>fastloop.pyx</code> 中实现 Cython 版本的代码，其内容如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> math <span class="keyword">import</span> exp</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">rbf_network</span><span class="params">(double[:, :] X, double[:] beta, double theta)</span>:</span></div><div class="line">    cdef int N = X.shape[<span class="number">0</span>]</div><div class="line">    cdef int D = X.shape[<span class="number">1</span>]</div><div class="line">    cdef double[:] Y = np.zeros(N)</div><div class="line">    cdef int i, j, d</div><div class="line">    cdef double r = <span class="number">0</span></div><div class="line">    </div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</div><div class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(N):</div><div class="line">            r = <span class="number">0</span></div><div class="line">            <span class="keyword">for</span> d <span class="keyword">in</span> range(D):</div><div class="line">                r += (X[j, d]-X[i, d])**<span class="number">2</span></div><div class="line">            r = r**<span class="number">0.5</span></div><div class="line">            Y[i] += beta[j] * exp(-(r*theta)**<span class="number">2</span>)</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> Y</div></pre></td></tr></table></figure>
+<p>目前为止我们做的工作仅仅是在变量名前面增加了一些类型声明。对局部变量，我们采用 <code>cdef</code> 关键字。对 array 数组，我们采用 <a href="docs.cython.org/en/latest/src/userguide/memoryviews.html">‘memoryviews’</a> 来接受 numpy 数组输入。</p>
+<p>值得注意的是，在 <code>*.pyx</code> 文件中，你没有必要对变量进行声明，任何没有声明类型的变量都会留在 Python 中，而不会被翻译为 C 类型。</p>
+<p>为了编译上面的 <code>fastloop.pyx</code> 文件，我们需要写一个 <code>setup.py</code> 脚本，内容如下所示</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> distutils.core <span class="keyword">import</span> setup</div><div class="line"><span class="keyword">from</span> Cython.Build <span class="keyword">import</span> cythonize</div><div class="line"></div><div class="line">setup(name=<span class="string">'fastloop'</span>, ext_modules=cythonize(<span class="string">'fastloop.pyx'</span>),)</div></pre></td></tr></table></figure>
+<p>然后，我们在 terminal 中对 <code>fastloop.pyx</code> 进行编译，命令如下：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python setup.py build_ext --inplace</div></pre></td></tr></table></figure>
+<p>这个命令会生成 C 代码文件 <code>fastloop.c</code> 和一个编译好的 Python 库文件 <code>fastloop.so</code>。</p>
+<p>然后我们对这个库文件进行测试</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> fastloop <span class="keyword">import</span> rbf_network</div><div class="line">%timeit rbf_network(X, beta, theta) <span class="comment"># 87.3 ms per loop</span></div></pre></td></tr></table></figure>
+<pre><code>10 loops, best of 3: 84 ms per loop
+</code></pre><p>果然快了很多，但是我们还有提升空间。Cython 中有很多提升性能的小技巧。下面将介绍第一个，如果我们在 terminal 中输入</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cython fastloop.pyx <span class="_">-a</span></div></pre></td></tr></table></figure>
+<p>我们将生成一个 <code>fastloop.html</code> 文件，我们在浏览器中打开它。如下图所示<br><img src="html.png" alt="html"></p>
+<p>黄色高亮的语句仍然在使用 Python 运行，导致程序变慢。我们优化的目标是避免黄色高亮语句，尤其是在循环中。</p>
+<p>我们的第一个问题是依旧在使用 Python 版本的指数函数，应该把它替换成 C 版本的。 <code>math.h</code> 中的大多数函数都包含在了 Cython 的 <code>libc</code> 库中，所以只需要用下面的语句替换 <code>from math import exp</code> </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> libc.math <span class="keyword">import</span> exp</div></pre></td></tr></table></figure>
+<p>接下来我们需要增加一些编译指令（<a href="docs.cython.org/en/latest/src/reference/compilation.html#compiler-directives">compiler directives</a>），最简单的方法是将下面的这行增加到 <code>fastloop.pyx</code> 文件头部</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#cython: boundscheck=False, wraparound=False, nonecheck=False</span></div></pre></td></tr></table></figure>
+<p>通过把这些检测关掉，一旦程序出错，你只能得到段错误的提示，而不是像 python 中那种特别详细的信息，因此，最好是先把代码的错误排除干净，再添加该行。</p>
+<p>接下来我们可以考虑修改编译器参数（这些属于 C 语言的技巧）。当我们用 <code>gcc</code> 时，最重要的编译选项是 <code>-ffast-math</code>。在我有限的经验中，这可以大大提高程序速度，而不损失可靠性。为了实现这个改变，我们需要修改 <code>setup.py</code> 文件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> distutils.core <span class="keyword">import</span> setup</div><div class="line"><span class="keyword">from</span> distutils.extension <span class="keyword">import</span> Extension</div><div class="line"><span class="keyword">from</span> Cython.Distutils <span class="keyword">import</span> build_ext</div><div class="line"></div><div class="line">ext_modules=[ Extension(<span class="string">"fastloop"</span>,</div><div class="line">              [<span class="string">"fastloop.pyx"</span>],</div><div class="line">              libraries=[<span class="string">"m"</span>],</div><div class="line">              extra_compile_args=[<span class="string">"-ffast-math"</span>])]</div><div class="line">              </div><div class="line">setup(</div><div class="line">    name=<span class="string">'fastloop'</span>, </div><div class="line">    cmdclass=&#123;<span class="string">"build_ext"</span>: build_ext&#125;,</div><div class="line">    ext_modules=ext_modules)</div></pre></td></tr></table></figure>
+<p>现在再次运行 <code>cython fastloop.pyx -a</code>，我们看到循环中的语句已经不是用 Python 运行的了：<br><img src="html1.png" alt="html1"></p>
+<p>循环之外的黄色语句在这里对程序运行速度没有太大影响（如果需要在循环中多次调用这个函数，那么将会影响速度）。</p>
+<p>我们可以重新编译程序，并测速</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> fastloop <span class="keyword">import</span> rbf_network </div><div class="line">%timeit rbf_network(X, beta, theta) <span class="comment"># 21.7 ms per loop</span></div></pre></td></tr></table></figure>
+<pre><code>10 loops, best of 3: 22.4 ms per loop
+</code></pre><p>本文为 jupyter notebook 转换成 markdown 格式，也可以通过 <a href="http://nbviewer.jupyter.org/" target="_blank" rel="external">nbviewer</a> 将 <code>.ipynb</code> 文件转成网页文件。然后再把 <code>&lt;iframe src=&quot;your_URL&quot; width=&quot;700&quot; height=&quot;400&quot;&gt;&lt;/iframe&gt;</code> 插入文章需要引用的部分。</p>
+]]></content>
+      
+        
     </entry>
-
     
     <entry>
       <title><![CDATA[Hexo 基本操作]]></title>
-      <url>%2F2017%2F03%2F05%2F%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%2F</url>
-      <content type="text"><![CDATA[本文参考了官网文档，主要介绍了 Hexo 文章的写作、生成、部署，以及写作过程中涉及的插入引用、码块、图片、Latex 公式，以及在主页上只局部显示部分文章内容的设置。 写作创建新文章，在根目录下输入：1$ hexo new [layout] &lt;title&gt; 其中的 [layout] 默认为 post，可以通过修改 _config.yml 中的 default_layout 设置默认布局。 布局（Layout）Hexo 有三种默认的布局：post、page 和 draft ，它们分别保存在本地不同的路径，二自定义的其它布局和 post 布局都保存在 source/_posts 文件夹中。 布局 路径 post source/_posts page source draft source/_drafts 如果不想文章的格式被处理，则可以在 Front-Matter 中设置 layout: false。这时网页只会显示纯文本，不会加载任何模板，但是这时的网页也并不会保留 markdown 的标记符号，而是将其转为 html 的标签。 文件名称创建新文件时，通过命令：hexo new filename，这时在 source/_posts 中会出现文件 filename.md，并且在文件头部初始化了 Front-Matter。但是为了便于管理文件，希望在文件名前面加入创建日期，保存为日期+文件名.md，例如 2017-03-05-filename.md，则需要修改 hexo 根目录下的 _config.yml 文件，将其中的 new_post_name 字段参数设置为: :year-:month-:day-:title.md，这样就可以达到预期效果了。其中 :month 和 :day 可以替换为 :i_month 和 :i_day，使得建立的文件名月份和日期前面没有0（七号的 07 替换为 7）。 草稿上文中提到了 Hexo 的 draft 布局，可以通过命令 hexo new draft filename 建立这种布局的文件，它默认保存在 source/_drafts 文件夹，可以通过 publish 命令将其移动到 source/_posts 文件夹中，该命令中也可以通过 layout 来指定布局。1$ hexo publish [layout] &lt;title&gt; 保存为草稿的文章不会在网页中显示。 Front-matterFront-matter hexo new filename 命令生成的文件中自带的配置信息，位于文件开头，用于制定当前文稿的样式。例如本文的 Front-matter 为：12345678---title: hexo 基本操作date: 2017-03-05 15:11:26tags:- hexo 命令categories: - 网站配置相关--- 除了上面的 title、date、tags、categories 之外，还可以添加别的字段，例如 字段 作用 comments: true 允许或禁止该文章的评论，其值默认为 true 因此可以不指定，如果设为 false，则禁止游客对该文进行评论 updated: 日期 用于设置文章更新日期 permalink: :year/:month/:day/:title/ 用于生成访问链接的格式，默认为 https://charlesnord.github.io/2016/05/06/your_title/ 类似的，可以改为 :year/:month/:day/:title.html 更搜索引擎友好 分类和标签只有 post 布局的文章支持分类和标签。分类和标签分别对应 Front-Matter 中的 categories: 和 tags:字段，其书写格式如上一节所示。分类和标签不同，分类有顺序性和层次性，而标签不分顺序和层次。 如果 categories: 下指定了多个类别，那么这些类别是包含关系，例如：123categories:- Diary- Life 其中 Life 是 Diary 的子分类，而不是并列分类。因此 categories: 最好只指定一个类别，而 tags: 可以指定多个标签，每个标签以 - 开头，在 tag: 下单独占一行。 标签插件（Tag Plugins）这里的标签插件不是上文的标签，它们用于在文章中快速插入特定内容的插件，例如图片、代码块等。这里的语法和 markdown 不同，是 Hexo 特有的语法（也可以用 markdown 语法）。 引用块在文章中插入引言，可包含作者、来源和标题。别号： quote123&#123;% blockquote [author[, source]] [link] [source_link_title] %&#125;content&#123;% endblockquote%&#125; 样例 没有提供参数，则只输出普通的 blockquote123456&#123;% blockquote %&#125;我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！”&#123;% endblockquote %&#125; 我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！” 引用书上的句子123456&#123;% blockquote 王小波，绿毛水怪 %&#125;我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！”&#123;% endblockquote %&#125; 我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！” 王小波，绿毛水怪 引用网络上的文章 123456&#123;% blockquote 王小波，绿毛水怪 %&#125;我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！”&#123;% endblockquote %&#125; 我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！” 王小波绿毛水怪 代码块别号：code123&#123;% codeblock [title] [lang:language] [url] [link text] %&#125;code snippet&#123;% endcodeblock %&#125; 反引号代码块：1```[language] [title] [url] [link text] code snippet``` 样例 Hexo 代码块12345&#123;% codeblock lang:python %&#125;x = 1y = 2print x + y&#123;% endcodeblock%&#125; 123x = 1y = 2print x + y 反引号代码块12345```pythonx = 1y = 2print x + y``` 123x = 1y = 2print x + y 更多的标签插件（Tag Plugins）请参考官方文档 Latex 公式Latex 公式可以用两种区块进行包裹，用于提示进行 latex 渲染，分别是 \\[ math equation \\] 和 $$ math equation $$。例子：1234567891011121314\\[\begin&#123;aligned&#125;\dot&#123;x&#125; &amp; = \sigma(y-x) \\\\dot&#123;y&#125; &amp; = \rho x - y - xz \\\\dot&#123;z&#125; &amp; = -\beta z + xy\end&#123;aligned&#125; \\]$$\frac&#123;\partial u&#125;&#123;\partial t&#125; = h^2 \left( \frac&#123;\partial^2 u&#125;&#123;\partial x^2&#125; + \frac&#123;\partial^2 u&#125;&#123;\partial y^2&#125; + \frac&#123;\partial^2 u&#125;&#123;\partial z^2&#125;\right)$$$$\sum_1^n x^2 = 1$$ 效果：\[\begin{aligned}\dot{x} &amp; = \sigma(y-x) \\\dot{y} &amp; = \rho x - y - xz \\\dot{z} &amp; = -\beta z + xy\end{aligned}\] $$\frac{\partial u}{\partial t} = h^2 \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2}\right)$$ $$\sum_1^n x^2 = 1$$ 文章长度过长Hexo 默认在主页上全文显示所有文章，为了能在主页只显示文章的简介，可以在文章合适的位置添加如下行：1&lt;!--more--&gt; 这样，在主页上只会显示该行以前的内容，以后的内容被折叠。因此，每篇文章开头最好写一个用于在主页显示的简介，然后在简介下方添加上面的行。 资源文件夹资源文件夹是指存储文章中图片、CSS、JS 等文件的文件夹。如果 Hexo 项目中只有少量图片，可以把它们放在 source/images 文件夹中。然后用 markdown 语法 ![](/images/image.jpg) 在文章中引用它们。 文章资源文件夹正常情况下建议采用文章资源文件夹，对每篇文章的资源进行分别存储。首先需要修改 _config.yml 中的 post_asset_folder 选项设置为 true 来打开。打开这个选项后，Hexo 会每次在用户通过 hexo new filename 新建的文章建立与文章同名的文件夹，用来存储该文章需要的资源。 相对路径引用的标签插件通过常规的 markdown 语法和相对路径来引用图片和其它资源可能会导致它们在主页或者 archieve 页显示不正确，因此建议采用 hexo 的标签插件来对其进行引用。 123&#123;% asset_img slug [title] %&#125;&#123;% asset_path slug %&#125;&#123;% asset_link slug [title] %&#125; 建议采用插件引用图片，例如，在与文章同名的资源文件夹下放置 example.jpg 图片，然后，在文章中通过下面的语句进行引用。1&#123;% asset_img example.jpg This is an example %&#125; 服务器编辑完文档后，通过在 hexo 根目录执行命令 hexo server（hexo s） 来将项目部署到本地服务器上，部署端口默认为 4000。此时，在本机输入 http://localhost:4000 即可访问网站。服务器启动期间，Hexo 会监视文件变动并自动更新，因此每次改动源文件后无需重新生成、重启服务器才可以看到变化，直接刷新网页即可。 如果想修改默认端口，例如改为 5000 ，可以运行命令 hexo server -p 5000。 除了在主机上通过 http://localhost:4000 访问，在局域网下，连接同一个路由器的设备都可以访问该网站，前提是知道该网站服务器的局域网 ip 地址。在 mac 上，可以通过: 系统偏好设置 -&gt; 网络 查看本机的局域网 ip。例如本人电脑目前的局域网 ip 地址为 192.168.1.104，在本人手机浏览器输入：http://192.168.1.104:4000，即可访问本网站。至于如何通过外网访问，请阅读这一系列的 Hexo 搭建教程。 生成文件如果想将网站部署到 github 上，则需要将本地的工程生成为静态文件，在 Hexo 根目录下执行命令：hexo generate（hexo g）。生成后执行 hexo deploy 将其部署到 github。对于部署到 github 的静态文件，本地修改源文件不能实时显示到网站上，因此每次做出修改后，想要观察效果，可以用上节的命令将其部署到本地服务器，确认没有问题了，再用本节的命令生成静态文件，并部署到 github。 监视文件变动如果要重新生成所有文件，则需要执行命令 hexo clean，hexo g，但是这样往往生成的时间会很长。也可以采用1hexo generate --watch 实时地生成静态文件，执行上述命令后，Hexo 能够通过对比文件的 SHA1 checksum 监视文件的实时变动，只对变动的文件生成静态文件。 生成后部署部署到 github 采用 hexo deploy 命令，也可以任意执行下面的两条组合命令中的一条，让 Hexo 在生成完成后自动部署网站，两条命令是等价的。12hexo generate --deployhexo deploy --generate 或者简写为： hexo g -dhexo d -g 至此，Hexo 的基本操作就介绍完了，完整介绍请查阅官网文档]]></content>
+      <url>http://charlesnord.github.io/2017/03/05/%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
+      <content type="html"><![CDATA[<p>本文参考了<a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="external">官网文档</a>，主要介绍了 Hexo 文章的写作、生成、部署，以及写作过程中涉及的插入引用、码块、图片、Latex 公式，以及在主页上只局部显示部分文章内容的设置。</p>
+<a id="more"></a>
+<h2 id="写作"><a href="#写作" class="headerlink" title="写作"></a>写作</h2><p>创建新文章，在根目录下输入：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new [layout] &lt;title&gt;</div></pre></td></tr></table></figure></p>
+<p>其中的 <code>[layout]</code> 默认为 <code>post</code>，可以通过修改 <code>_config.yml</code> 中的 <code>default_layout</code> 设置默认布局。</p>
+<h3 id="布局（Layout）"><a href="#布局（Layout）" class="headerlink" title="布局（Layout）"></a>布局（Layout）</h3><p>Hexo 有三种默认的布局：<code>post</code>、<code>page</code> 和 <code>draft</code> ，它们分别保存在本地不同的路径，二自定义的其它布局和 <code>post</code> 布局都保存在 <code>source/_posts</code> 文件夹中。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><strong>布局</strong></th>
+<th style="text-align:left"><strong>路径</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>post</code></td>
+<td style="text-align:left"><code>source/_posts</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>page</code></td>
+<td style="text-align:left"><code>source</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>draft</code></td>
+<td style="text-align:left"><code>source/_drafts</code></td>
+</tr>
+</tbody>
+</table>
+<p>如果不想文章的格式被处理，则可以在 Front-Matter 中设置 <code>layout: false</code>。这时网页只会显示纯文本，不会加载任何模板，但是这时的网页也并不会保留 markdown 的标记符号，而是将其转为 html 的标签。</p>
+<h3 id="文件名称"><a href="#文件名称" class="headerlink" title="文件名称"></a>文件名称</h3><p>创建新文件时，通过命令：<code>hexo new filename</code>，这时在 <code>source/_posts</code> 中会出现文件 <code>filename.md</code>，并且在文件头部初始化了 Front-Matter。但是为了便于管理文件，希望在文件名前面加入创建日期，保存为<code>日期+文件名.md</code>，例如 <code>2017-03-05-filename.md</code>，则需要修改 hexo 根目录下的 <code>_config.yml</code> 文件，将其中的 <code>new_post_name</code> 字段参数设置为: <code>:year-:month-:day-:title.md</code>，这样就可以达到预期效果了。其中 <code>:month</code> 和 <code>:day</code> 可以替换为 <code>:i_month</code> 和 <code>:i_day</code>，使得建立的文件名月份和日期前面没有0（七号的 07 替换为 7）。</p>
+<h3 id="草稿"><a href="#草稿" class="headerlink" title="草稿"></a>草稿</h3><p>上文中提到了 Hexo 的 <code>draft</code> 布局，可以通过命令 <code>hexo new draft filename</code> 建立这种布局的文件，它默认保存在 <code>source/_drafts</code> 文件夹，可以通过 <code>publish</code> 命令将其移动到 <code>source/_posts</code> 文件夹中，该命令中也可以通过 <code>layout</code> 来指定布局。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo publish [layout] &lt;title&gt;</div></pre></td></tr></table></figure></p>
+<p>保存为草稿的文章不会在网页中显示。</p>
+<h2 id="Front-matter"><a href="#Front-matter" class="headerlink" title="Front-matter"></a>Front-matter</h2><p>Front-matter <code>hexo new filename</code> 命令生成的文件中自带的配置信息，位于文件开头，用于制定当前文稿的样式。例如本文的 Front-matter 为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line">title: hexo 基本操作</div><div class="line">date: 2017-03-05 15:11:26</div><div class="line">tags:</div><div class="line">- hexo 命令</div><div class="line">categories: </div><div class="line">- 网站配置相关</div><div class="line">---</div></pre></td></tr></table></figure></p>
+<p>除了上面的 title、date、tags、categories 之外，还可以添加别的字段，例如</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><strong>字段</strong></th>
+<th style="text-align:left"><strong>作用</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>comments: true</code></td>
+<td style="text-align:left">允许或禁止该文章的评论，其值默认为 <code>true</code> 因此可以不指定，如果设为 <code>false</code>，则禁止游客对该文进行评论</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>updated: 日期</code></td>
+<td style="text-align:left">用于设置文章更新日期</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>permalink: :year/:month/:day/:title/</code></td>
+<td style="text-align:left">用于生成访问链接的格式，默认为 <code>https://charlesnord.github.io/2016/05/06/your_title/</code> 类似的，可以改为 <code>:year/:month/:day/:title.html</code> 更搜索引擎友好</td>
+</tr>
+</tbody>
+</table>
+<h3 id="分类和标签"><a href="#分类和标签" class="headerlink" title="分类和标签"></a>分类和标签</h3><p>只有 <code>post</code> 布局的文章支持分类和标签。分类和标签分别对应 Front-Matter 中的 <code>categories:</code> 和 <code>tags:</code>字段，其书写格式如上一节所示。分类和标签不同，分类有顺序性和层次性，而标签不分顺序和层次。</p>
+<p>如果 <code>categories:</code> 下指定了多个类别，那么这些类别是包含关系，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">categories:</div><div class="line">- Diary</div><div class="line">- Life</div></pre></td></tr></table></figure></p>
+<p>其中 <code>Life</code> 是 <code>Diary</code> 的子分类，而不是并列分类。因此 <code>categories:</code> 最好只指定一个类别，而 <code>tags:</code> 可以指定多个标签，每个标签以 <code>-</code> 开头，在 <code>tag:</code> 下单独占一行。</p>
+<h2 id="标签插件（Tag-Plugins）"><a href="#标签插件（Tag-Plugins）" class="headerlink" title="标签插件（Tag Plugins）"></a>标签插件（Tag Plugins）</h2><p>这里的标签插件不是上文的标签，它们用于在文章中快速插入特定内容的插件，例如图片、代码块等。这里的语法和 markdown 不同，是 Hexo 特有的语法（也可以用 markdown 语法）。</p>
+<h3 id="引用块"><a href="#引用块" class="headerlink" title="引用块"></a>引用块</h3><p>在文章中插入引言，可包含作者、来源和标题。<br><strong>别号：</strong> quote<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;% blockquote [author[, source]] [link] [source_link_title] %&#125;</div><div class="line">content</div><div class="line">&#123;% endblockquote%&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h4><ul>
+<li><strong>没有提供参数，则只输出普通的 blockquote</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;% blockquote %&#125;</div><div class="line">我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”</div><div class="line">我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。</div><div class="line">我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”</div><div class="line">妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！”</div><div class="line">&#123;% endblockquote %&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote><p>我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”<br>我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。<br>我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”<br>妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！”</p>
+</blockquote>
+<ul>
+<li><strong>引用书上的句子</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;% blockquote 王小波，绿毛水怪 %&#125;</div><div class="line">我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”</div><div class="line">我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。</div><div class="line">我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”</div><div class="line">妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！”</div><div class="line">&#123;% endblockquote %&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote><p>我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”<br>我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。<br>我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”<br>妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！”</p>
+<footer><strong>王小波，绿毛水怪</strong></footer></blockquote>  
+<ul>
+<li><strong>引用网络上的文章</strong>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;% blockquote 王小波，绿毛水怪 %&#125;</div><div class="line">我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”</div><div class="line">我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。</div><div class="line">我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”</div><div class="line">妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！”</div><div class="line">&#123;% endblockquote %&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote><p>我说：“妖妖，你看那水银灯的灯光像什么？大团的蒲公英浮在街道的河流口，吞吐着柔软的针一样的光。”妖妖说：“好，那么我们在人行道上走呢？这昏黄的路灯呢？”<br>我抬头看看路灯，它把昏黄的灯光隔着蒙蒙的雾气一直投向地面。<br>我说：“我们好象在池塘的水底。从一个月亮走向另一个月亮。”<br>妖妖忽然大惊小怪地叫起来：“陈辉，你是诗人呢！”</p>
+<footer><strong>王小波</strong><cite><a href="http://www.kanunu8.com/book3/7055/147969.html" target="_blank" rel="external">绿毛水怪</a></cite></footer></blockquote>
+<h3 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h3><p><strong>别号：</strong>code<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;% codeblock [title] [lang:language] [url] [link text] %&#125;</div><div class="line">code snippet</div><div class="line">&#123;% endcodeblock %&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>反引号代码块：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">```[language] [title] [url] [link text] code snippet```</div></pre></td></tr></table></figure></p>
+<h4 id="样例-1"><a href="#样例-1" class="headerlink" title="样例"></a>样例</h4><ul>
+<li><strong>Hexo 代码块</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;% codeblock lang:python %&#125;</div><div class="line">x = 1</div><div class="line">y = 2</div><div class="line">print x + y</div><div class="line">&#123;% endcodeblock%&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">x = <span class="number">1</span></div><div class="line">y = <span class="number">2</span></div><div class="line"><span class="keyword">print</span> x + y</div></pre></td></tr></table></figure>
+<ul>
+<li><strong>反引号代码块</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">```python</div><div class="line">x = 1</div><div class="line">y = 2</div><div class="line">print x + y</div><div class="line">```</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">x = <span class="number">1</span></div><div class="line">y = <span class="number">2</span></div><div class="line"><span class="keyword">print</span> x + y</div></pre></td></tr></table></figure>
+<p>更多的标签插件（Tag Plugins）请参考<a href="https://hexo.io/zh-cn/docs/tag-plugins.html" target="_blank" rel="external">官方文档</a></p>
+<h2 id="Latex-公式"><a href="#Latex-公式" class="headerlink" title="Latex 公式"></a>Latex 公式</h2><p>Latex 公式可以用两种区块进行包裹，用于提示进行 latex 渲染，分别是 <code>\\[ math equation \\]</code> 和 <code>$$ math equation $$</code>。<br><strong>例子：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">\\[\begin&#123;aligned&#125;</div><div class="line">\dot&#123;x&#125; &amp; = \sigma(y-x) \\\</div><div class="line">\dot&#123;y&#125; &amp; = \rho x - y - xz \\\</div><div class="line">\dot&#123;z&#125; &amp; = -\beta z + xy</div><div class="line">\end&#123;aligned&#125; </div><div class="line">\\]</div><div class="line"></div><div class="line">$$</div><div class="line">\frac&#123;\partial u&#125;&#123;\partial t&#125; = h^2 \left( \frac&#123;\partial^2 u&#125;&#123;\partial x^2&#125; + \frac&#123;\partial^2 u&#125;&#123;\partial y^2&#125; + \frac&#123;\partial^2 u&#125;&#123;\partial z^2&#125;\right)</div><div class="line">$$</div><div class="line"></div><div class="line">$$</div><div class="line">\sum_1^n x^2 = 1</div><div class="line">$$</div></pre></td></tr></table></figure></p>
+<p><strong>效果：</strong><br>\[\begin{aligned}<br>\dot{x} &amp; = \sigma(y-x) \\<br>\dot{y} &amp; = \rho x - y - xz \\<br>\dot{z} &amp; = -\beta z + xy<br>\end{aligned}<br>\]</p>
+<p>$$<br>\frac{\partial u}{\partial t} = h^2 \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2}\right)<br>$$</p>
+<p>$$<br>\sum_1^n x^2 = 1<br>$$</p>
+<h2 id="文章长度过长"><a href="#文章长度过长" class="headerlink" title="文章长度过长"></a>文章长度过长</h2><p>Hexo 默认在主页上全文显示所有文章，为了能在主页只显示文章的简介，可以在文章合适的位置添加如下行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;!--more--&gt;</div></pre></td></tr></table></figure></p>
+<p>这样，在主页上只会显示该行以前的内容，以后的内容被折叠。因此，每篇文章开头最好写一个用于在主页显示的简介，然后在简介下方添加上面的行。</p>
+<h2 id="资源文件夹"><a href="#资源文件夹" class="headerlink" title="资源文件夹"></a>资源文件夹</h2><p>资源文件夹是指存储文章中图片、CSS、JS 等文件的文件夹。如果 Hexo 项目中只有少量图片，可以把它们放在 source/images 文件夹中。然后用 markdown 语法 <code>![](/images/image.jpg)</code> 在文章中引用它们。</p>
+<h3 id="文章资源文件夹"><a href="#文章资源文件夹" class="headerlink" title="文章资源文件夹"></a>文章资源文件夹</h3><p>正常情况下建议采用文章资源文件夹，对每篇文章的资源进行分别存储。首先需要修改 <code>_config.yml</code> 中的 <code>post_asset_folder</code> 选项设置为 <code>true</code> 来打开。<br>打开这个选项后，Hexo 会每次在用户通过 <code>hexo new filename</code> 新建的文章建立与文章同名的文件夹，用来存储该文章需要的资源。</p>
+<h3 id="相对路径引用的标签插件"><a href="#相对路径引用的标签插件" class="headerlink" title="相对路径引用的标签插件"></a>相对路径引用的标签插件</h3><p>通过常规的 markdown 语法和相对路径来引用图片和其它资源可能会导致它们在主页或者 archieve 页显示不正确，因此建议采用 hexo 的标签插件来对其进行引用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;% asset_img slug [title] %&#125;</div><div class="line">&#123;% asset_path slug %&#125;</div><div class="line">&#123;% asset_link slug [title] %&#125;</div></pre></td></tr></table></figure>
+<p>建议采用插件引用图片，例如，在与文章同名的资源文件夹下放置 <code>example.jpg</code> 图片，然后，在文章中通过下面的语句进行引用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;% asset_img example.jpg This is an example %&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h2><p>编辑完文档后，通过在 hexo 根目录执行命令 <code>hexo server</code>（<code>hexo s</code>） 来将项目部署到本地服务器上，部署端口默认为 <code>4000</code>。此时，在本机输入 <code>http://localhost:4000</code> 即可访问网站。服务器启动期间，Hexo 会监视文件变动并自动更新，因此每次改动源文件后无需重新生成、重启服务器才可以看到变化，直接刷新网页即可。 </p>
+<p>如果想修改默认端口，例如改为 <code>5000</code> ，可以运行命令 <code>hexo server -p 5000</code>。</p>
+<p>除了在主机上通过 <code>http://localhost:4000</code> 访问，在局域网下，连接同一个路由器的设备都可以访问该网站，前提是知道该网站服务器的局域网 ip 地址。在 mac 上，可以通过: 系统偏好设置 -&gt; 网络 查看本机的局域网 ip。例如本人电脑目前的局域网 ip 地址为 <code>192.168.1.104</code>，在本人手机浏览器输入：<code>http://192.168.1.104:4000</code>，即可访问本网站。至于如何通过外网访问，请阅读这一系列的 <a href="http://zhiho.github.io/2015/09/21/start-hexo/" target="_blank" rel="external">Hexo 搭建教程</a>。</p>
+<h2 id="生成文件"><a href="#生成文件" class="headerlink" title="生成文件"></a>生成文件</h2><p>如果想将网站部署到 github 上，则需要将本地的工程生成为静态文件，在 Hexo 根目录下执行命令：<code>hexo generate</code>（<code>hexo g</code>）。生成后执行 <code>hexo deploy</code> 将其部署到 github。对于部署到 github 的静态文件，本地修改源文件不能实时显示到网站上，因此每次做出修改后，想要观察效果，可以用上节的命令将其部署到本地服务器，确认没有问题了，再用本节的命令生成静态文件，并部署到 github。</p>
+<h3 id="监视文件变动"><a href="#监视文件变动" class="headerlink" title="监视文件变动"></a>监视文件变动</h3><p>如果要重新生成所有文件，则需要执行命令 <code>hexo clean</code>，<code>hexo g</code>，但是这样往往生成的时间会很长。也可以采用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo generate --watch</div></pre></td></tr></table></figure></p>
+<p>实时地生成静态文件，执行上述命令后，Hexo 能够通过对比文件的 SHA1 checksum 监视文件的实时变动，只对变动的文件生成静态文件。</p>
+<h3 id="生成后部署"><a href="#生成后部署" class="headerlink" title="生成后部署"></a>生成后部署</h3><p>部署到 github 采用 <code>hexo deploy</code> 命令，也可以任意执行下面的两条组合命令中的一条，让 Hexo 在生成完成后自动部署网站，两条命令是等价的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo generate --deploy</div><div class="line">hexo deploy --generate</div></pre></td></tr></table></figure></p>
+<p>或者<strong>简写</strong>为：</p>
+<blockquote>
+<p>hexo g -d<br>hexo d -g</p>
+</blockquote>
+<p>至此，Hexo 的基本操作就介绍完了，完整介绍请查阅<a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="external">官网文档</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 网站配置相关 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> hexo 命令 </tag>
+            
+        </tags>
+        
     </entry>
-
     
     <entry>
       <title><![CDATA[Hello World]]></title>
-      <url>%2F2017%2F03%2F05%2Fhello-world%2F</url>
-      <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick Start本文是 hexo 文档的一部分，记录了 hexo 的几个基本命令，通过它们，就可以清空之前的编译、编译新的文件、在本地服务器浏览网站，最终将其上传至 github。在此记录，便于查阅。 Create a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment hexo 配置网站全面教程这个教程十分有价值，涵盖了 hexo 的基本安装，以及各种复杂配置。分为好几部分，这里索引的是最关键的第三部分，前两部分在其网页内部有链接可以找到。 常见问题也列举了一些使用过程中常见问题的解决方案。]]></content>
+      <url>http://charlesnord.github.io/2017/03/05/hello-world/</url>
+      <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><p>本文是 hexo 文档的一部分，记录了 hexo 的几个基本命令，通过它们，就可以清空之前的编译、编译新的文件、在本地服务器浏览网站，最终将其上传至 github。在此记录，便于查阅。</p>
+<a id="more"></a>
+<h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+<h3 id="hexo-配置网站全面教程"><a href="#hexo-配置网站全面教程" class="headerlink" title="hexo 配置网站全面教程"></a>hexo 配置网站全面教程</h3><p><a href="http://zhiho.github.io/2015/09/29/hexo-next/" target="_blank" rel="external">这个教程</a>十分有价值，涵盖了 hexo 的基本安装，以及各种复杂配置。分为好几部分，这里索引的是最关键的第三部分，前两部分在其网页内部有链接可以找到。</p>
+<p><a href="http://theme-next.iissnan.com/faqs.html" target="_blank" rel="external">常见问题</a>也列举了一些使用过程中常见问题的解决方案。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 网站配置相关 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> hexo 命令 </tag>
+            
+            <tag> hexo command </tag>
+            
+        </tags>
+        
     </entry>
-
     
     <entry>
       <title><![CDATA[项目已被 OSX 使用，不能打开]]></title>
-      <url>%2F2017%2F03%2F05%2Fosx-%E5%8D%A0%E7%94%A8%2F</url>
-      <content type="text"><![CDATA[问题描述windows NTFS 格式的移动硬盘经常出现文件不能打开的情况，文件的颜色变浅，双击打开没有反应，右键打开方式，出现提示：项目 “xxx” 已被 OSX 使用，不能打开。如下图所示： 解决方案解决方案分为两步： 安装 Mounty正常的 NTFS 格式硬盘是无法从 mac 向其拷贝文件的，因为 mac 系统对其实只读权限，无法修改硬盘内部文件。而该软件的作用是将 NTFS 格式的移动硬盘挂载到 mac 系统上，使系统获得对硬盘的读写权限，便于我们修改硬盘内部的文件。 修改文件信息安装好 Mounty 后，就可以将硬盘挂载到系统上，并使系统获得对其的读写权限了。 打开 terminal，输入 ls -l 文件名 查看文件权限，可以先输入ls -l空格，然后直接将硬盘中的文件拖拽到 terminal 的该行尾部，回车。发现其权限为 -rwxr-xr-x@ 最末尾的 @ 即表示该文件被 mac osx 占用，如下图所示： terminal 中输入 xattr -c 文件名 解除 osx 对文件的占用，此时重复上一步，将不会在权限里面出现@。命令行如下图所示：执行完这个命令后，文件就能正常打开了。这个方法需要安装 Mounty，对于不想安装 Mounty 的，可以通过命令行将硬盘挂载为读写模式，具体方法见下一部分。 挂载硬盘为读写模式分为以下几步： 插入硬盘后，查看 /Volumes 下的文件，此时应该能发现两个硬盘，一个是系统的硬盘，另一个是插入的外接硬盘 输入 diskutil info /Volumes/硬盘名 查看 硬盘的 Device Node。我的是 /dev/disk2s1 (以上两步也可以用 diskutil list 查看，前提是能分辨出哪个是系统硬盘，哪个是刚插上的硬盘) 弹出该硬盘 hdiutil eject /Volumes/硬盘名，此时终端会输出 &quot;disk2&quot; unmounted 以及 &quot;disk2&quot; ejected 在 /Volumes/ 下创建一个目录，稍后将硬盘文件挂载到这个目录上 sudo mkdir /Volumes/MYHD 将硬盘重新挂载到上面的目录中，并赋予读写权限sudo mount_ntfs -o rw,nobrowse /dev/disk2s1 /Volumes/MYHD/ 此时可以进入 /Volumes/MYHD 目录，查看硬盘内部文件了 通过终端进入挂载目录，输入 xattr -c 文件名 就可以解除osx 对文件的占用了，这一步和第一种方法相同。 最后将硬盘弹出 hdiutil eject /Volumes/MYHD，这个命令执行完后，MYHD 目录也会消失，省的你再删了。]]></content>
+      <url>http://charlesnord.github.io/2017/03/05/osx-%E5%8D%A0%E7%94%A8/</url>
+      <content type="html"><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>windows NTFS 格式的移动硬盘经常出现文件不能打开的情况，文件的颜色变浅，双击打开没有反应，右键打开方式，出现提示：项目 “xxx” 已被 OSX 使用，不能打开。如下图所示：<br><img src="/2017/03/05/osx-占用/img1.png" alt="项目已被 OSX 使用，不能打开" title="项目已被 OSX 使用，不能打开"></p>
+<a id="more"></a>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>解决方案分为两步：</p>
+<h3 id="安装-Mounty"><a href="#安装-Mounty" class="headerlink" title="安装 Mounty"></a>安装 <a href="http://enjoygineering.com/mounty/" target="_blank" rel="external">Mounty</a></h3><p>正常的 NTFS 格式硬盘是无法从 mac 向其拷贝文件的，因为 mac 系统对其实只读权限，无法修改硬盘内部文件。而该软件的作用是将 NTFS 格式的移动硬盘挂载到 mac 系统上，使系统获得对硬盘的读写权限，便于我们修改硬盘内部的文件。</p>
+<h3 id="修改文件信息"><a href="#修改文件信息" class="headerlink" title="修改文件信息"></a>修改文件信息</h3><p>安装好 <a href="http://enjoygineering.com/mounty/" target="_blank" rel="external">Mounty</a> 后，就可以将硬盘挂载到系统上，并使系统获得对其的读写权限了。</p>
+<p>打开 terminal，输入 <code>ls -l 文件名</code> 查看文件权限，可以先输入<code>ls -l</code>空格，然后直接将硬盘中的文件拖拽到 terminal 的该行尾部，回车。发现其权限为 <code>-rwxr-xr-x@</code> 最末尾的 <code>@</code> 即表示该文件被 mac osx 占用，如下图所示：<br><img src="/2017/03/05/osx-占用/img2.jpeg" alt="注意观察-rwxr-xr-x@" title="注意观察-rwxr-xr-x@"></p>
+<p>terminal 中输入 <code>xattr -c 文件名</code> 解除 osx 对文件的占用，此时重复上一步，将不会在权限里面出现<code>@</code>。命令行如下图所示：<br><img src="/2017/03/05/osx-占用/img3.jpeg" alt="清除 @" title="清除 @"><br>执行完这个命令后，文件就能正常打开了。这个方法需要安装 Mounty，对于不想安装 Mounty 的，可以通过命令行将硬盘挂载为读写模式，具体方法见下一部分。</p>
+<h3 id="挂载硬盘为读写模式"><a href="#挂载硬盘为读写模式" class="headerlink" title="挂载硬盘为读写模式"></a>挂载硬盘为读写模式</h3><p>分为以下几步：</p>
+<ol>
+<li><p>插入硬盘后，查看 /Volumes 下的文件，此时应该能发现两个硬盘，一个是系统的硬盘，另一个是插入的外接硬盘  </p>
+</li>
+<li><p>输入 <code>diskutil info /Volumes/硬盘名</code> 查看 硬盘的 <code>Device Node</code>。我的是 <code>/dev/disk2s1</code> (以上两步也可以用 <code>diskutil list</code> 查看，前提是能分辨出哪个是系统硬盘，哪个是刚插上的硬盘)  </p>
+</li>
+<li><p>弹出该硬盘 <code>hdiutil eject /Volumes/硬盘名</code>，此时终端会输出 <code>&quot;disk2&quot; unmounted</code> 以及 <code>&quot;disk2&quot; ejected</code>  </p>
+</li>
+<li><p>在 <code>/Volumes/</code> 下创建一个目录，稍后将硬盘文件挂载到这个目录上 <code>sudo mkdir /Volumes/MYHD</code>  </p>
+</li>
+<li><p>将硬盘重新挂载到上面的目录中，并赋予读写权限<br><code>sudo mount_ntfs -o rw,nobrowse /dev/disk2s1 /Volumes/MYHD/</code>  </p>
+</li>
+<li><p>此时可以进入 <code>/Volumes/MYHD</code> 目录，查看硬盘内部文件了  </p>
+</li>
+<li><p>通过终端进入挂载目录，输入 <code>xattr -c 文件名</code> 就可以解除osx 对文件的占用了，这一步和第一种方法相同。  </p>
+</li>
+<li><p>最后将硬盘弹出 <code>hdiutil eject /Volumes/MYHD</code>，这个命令执行完后，MYHD 目录也会消失，省的你再删了。</p>
+</li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> 日常系统问题 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> mac 硬盘文件打不开 </tag>
+            
+            <tag> 项目已被 osx 使用 不能打开 </tag>
+            
+            <tag> mac 硬盘文件变浅 </tag>
+            
+        </tags>
+        
     </entry>
-
     
     <entry>
       <title><![CDATA[Mou]]></title>
-      <url>%2F2017%2F03%2F03%2Fmou-1%2F</url>
-      <content type="text"><![CDATA[Mou 是一个很不错的 markdown 书写工具，可以实时显示效果，虽然和 hexo 的某些语法，尤其是插入图片的语法不同，但是仍然可以一用，并且它支持输入 Latex。以下部分是 Mou 的示例文档，本人在软件的 Preferences 中勾选了 Enable Math，因此又试验性地输入了几个 Latex 公式。本文主要目的是为了便于查阅语法，对于快速入门的几个重要命令，将单独写博客记录。 &gt; OverviewMou, the missing Markdown editor for web developers. SyntaxStrong and Emphasizestrong or strong ( Cmd + B ) emphasize or emphasize ( Cmd + I ) Sometimes I want a lot of text to be bold.Like, seriously, a LOT of text Blockquotes Right angle brackets &gt; are used for block quotes. Links and EmailAn email &#x65;&#120;&#x61;&#x6d;&#112;&#108;&#x65;&#x40;&#x65;&#x78;&#x61;&#x6d;&#x70;&#108;&#x65;&#46;&#99;&#111;&#109; link. Simple inline link http://chenluois.com, another inline link Smaller, one more inline link with title Resize. A reference style link. Input id, then anywhere in the doc, define the link with corresponding id: Titles ( or called tool tips ) in the links are optional. ImagesAn inline image , title is optional. A reference style image. Inline code and Block codeInline code are surround by backtick key. To create a block code: Indent each line by at least 1 tab, or 4 spaces. var Mou = exactlyTheAppIwant; Ordered ListsOrdered lists are created using “1.” + Space: Ordered list item Ordered list item Ordered list item Unordered ListsUnordered list are created using “*” + Space: Unordered list item Unordered list item Unordered list item Or using “-“ + Space: Unordered list item Unordered list item Unordered list item Hard LinebreakEnd a line with two or more spaces will create a hard linebreak, called &lt;br /&gt; in HTML. ( Control + Return )Above line ended with 2 spaces. Horizontal RulesThree or more asterisks or dashes: HeadersSetext-style: This is H1This is H2atx-style: This is H1This is H2This is H3This is H4This is H5This is H6Extra SyntaxFootnotesFootnotes work mostly like reference-style links. A footnote is made of two things: a marker in the text that will become a superscript number; a footnote definition that will be placed in a list of footnotes at the end of the document. A footnote looks like this: That’s some text with a footnote.[^1] [^1]: And that’s the footnote. StrikethroughWrap with 2 tilde characters: Strikethrough Fenced Code BlocksStart with a line containing 3 or more backticks, and ends with the first line with the same number of backticks: 123Fenced code blocks are like Stardard Markdown’s regular codeblocks, except that they’re not indented and instead rely ona start and end fence lines to delimit the code block. TablesA simple table looks like this: First Header Second Header Third Header Content Cell Content Cell Content Cell Content Cell Content Cell Content Cell If you wish, you can add a leading and tailing pipe to each line of the table: First Header Second Header Third Header Content Cell Content Cell Content Cell Content Cell Content Cell Content Cell Specify alignment for each column by adding colons to separator lines: First Header Second Header Third Header Left Center Right Left Center Right ShortcutsView Toggle live preview: Shift + Cmd + I Toggle Words Counter: Shift + Cmd + W Toggle Transparent: Shift + Cmd + T Toggle Floating: Shift + Cmd + F Left/Right = 1/1: Cmd + 0 Left/Right = 3/1: Cmd + + Left/Right = 1/3: Cmd + - Toggle Writing orientation: Cmd + L Toggle fullscreen: Control + Cmd + F Actions Copy HTML: Option + Cmd + C Strong: Select text, Cmd + B Emphasize: Select text, Cmd + I Inline Code: Select text, Cmd + K Strikethrough: Select text, Cmd + U Link: Select text, Control + Shift + L Image: Select text, Control + Shift + I Select Word: Control + Option + W Select Line: Shift + Cmd + L Select All: Cmd + A Deselect All: Cmd + D Convert to Uppercase: Select text, Control + U Convert to Lowercase: Select text, Control + Shift + U Convert to Titlecase: Select text, Control + Option + U Convert to List: Select lines, Control + L Convert to Blockquote: Select lines, Control + Q Convert to H1: Cmd + 1 Convert to H2: Cmd + 2 Convert to H3: Cmd + 3 Convert to H4: Cmd + 4 Convert to H5: Cmd + 5 Convert to H6: Cmd + 6 Convert Spaces to Tabs: Control + [ Convert Tabs to Spaces: Control + ] Insert Current Date: Control + Shift + 1 Insert Current Time: Control + Shift + 2 Insert entity &lt;: Control + Shift + , Insert entity &gt;: Control + Shift + . Insert entity &amp;: Control + Shift + 7 Insert entity Space: Control + Shift + Space Insert Scriptogr.am Header: Control + Shift + G Shift Line Left: Select lines, Cmd + [ Shift Line Right: Select lines, Cmd + ] New Line: Cmd + Return Comment: Cmd + / Hard Linebreak: Control + Return Edit Auto complete current word: Esc Find: Cmd + F Close find bar: Esc Post Post on Scriptogr.am: Control + Shift + S Post on Tumblr: Control + Shift + T Export Export HTML: Option + Cmd + E Export PDF: Option + Cmd + P LaTex\[\begin{aligned}\dot{x} &amp; = \sigma(y-x) \\\dot{y} &amp; = \rho x - y - xz \\\dot{z} &amp; = -\beta z + xy\end{aligned}\] $$\frac{\partial u}{\partial t} = h^2 \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2}\right)$$ $$\sum_1^n x^2 = 1$$ And more?Don’t forget to check Preferences, lots of useful options are there. Follow @Mou on Twitter for the latest news. For feedback, use the menu Help - Send Feedback]]></content>
+      <url>http://charlesnord.github.io/2017/03/03/mou-1/</url>
+      <content type="html"><![CDATA[<p>Mou 是一个很不错的 markdown 书写工具，可以实时显示效果，虽然和 hexo 的某些语法，尤其是插入图片的语法不同，但是仍然可以一用，并且它支持输入 Latex。以下部分是 Mou 的示例文档，本人在软件的 Preferences 中勾选了 Enable Math，因此又试验性地输入了几个 Latex 公式。本文主要目的是为了便于查阅语法，对于快速入门的几个重要命令，将单独写博客记录。</p>
+<p><img src="http://25.io/mou/Mou_128.png" alt="Mou icon"><br><a id="more"></a>&gt;</p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p><strong>Mou</strong>, the missing Markdown editor for <em>web developers</em>.</p>
+<h3 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h3><h4 id="Strong-and-Emphasize"><a href="#Strong-and-Emphasize" class="headerlink" title="Strong and Emphasize"></a>Strong and Emphasize</h4><p><strong>strong</strong> or <strong>strong</strong> ( Cmd + B )</p>
+<p><em>emphasize</em> or <em>emphasize</em> ( Cmd + I )</p>
+<p><strong>Sometimes I want a lot of text to be bold.<br>Like, seriously, a <em>LOT</em> of text</strong></p>
+<h4 id="Blockquotes"><a href="#Blockquotes" class="headerlink" title="Blockquotes"></a>Blockquotes</h4><blockquote>
+<p>Right angle brackets &gt; are used for block quotes.</p>
+</blockquote>
+<h4 id="Links-and-Email"><a href="#Links-and-Email" class="headerlink" title="Links and Email"></a>Links and Email</h4><p>An email <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#x3a;&#101;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#x40;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#99;&#x6f;&#x6d;">&#101;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#x40;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#99;&#x6f;&#x6d;</a> link.</p>
+<p>Simple inline link <a href="http://chenluois.com" target="_blank" rel="external">http://chenluois.com</a>, another inline link <a href="http://25.io/smaller/" target="_blank" rel="external">Smaller</a>, one more inline link with title <a href="http://resizesafari.com" title="a Safari extension" target="_blank" rel="external">Resize</a>.</p>
+<p>A <a href="http://25.io/mou/" title="Markdown editor on Mac OS X" target="_blank" rel="external">reference style</a> link. Input id, then anywhere in the doc, define the link with corresponding id:</p>
+<p>Titles ( or called tool tips ) in the links are optional.</p>
+<h4 id="Images"><a href="#Images" class="headerlink" title="Images"></a>Images</h4><p>An inline image <img src="http://25.io/smaller/favicon.ico" alt="Smaller icon" title="Title here">, title is optional.</p>
+<p>A <img src="http://resizesafari.com/favicon.ico" alt="Resize icon" title="Title"> reference style image.</p>
+<h4 id="Inline-code-and-Block-code"><a href="#Inline-code-and-Block-code" class="headerlink" title="Inline code and Block code"></a>Inline code and Block code</h4><p>Inline code are surround by <code>backtick</code> key. To create a block code:</p>
+<pre><code>Indent each line by at least 1 tab, or 4 spaces.
+var Mou = exactlyTheAppIwant; 
+</code></pre><h4 id="Ordered-Lists"><a href="#Ordered-Lists" class="headerlink" title="Ordered Lists"></a>Ordered Lists</h4><p>Ordered lists are created using “1.” + Space:</p>
+<ol>
+<li>Ordered list item</li>
+<li>Ordered list item</li>
+<li>Ordered list item</li>
+</ol>
+<h4 id="Unordered-Lists"><a href="#Unordered-Lists" class="headerlink" title="Unordered Lists"></a>Unordered Lists</h4><p>Unordered list are created using “*” + Space:</p>
+<ul>
+<li>Unordered list item</li>
+<li>Unordered list item</li>
+<li>Unordered list item </li>
+</ul>
+<p>Or using “-“ + Space:</p>
+<ul>
+<li>Unordered list item</li>
+<li>Unordered list item</li>
+<li>Unordered list item</li>
+</ul>
+<h4 id="Hard-Linebreak"><a href="#Hard-Linebreak" class="headerlink" title="Hard Linebreak"></a>Hard Linebreak</h4><p>End a line with two or more spaces will create a hard linebreak, called <code>&lt;br /&gt;</code> in HTML. ( Control + Return )<br>Above line ended with 2 spaces.</p>
+<h4 id="Horizontal-Rules"><a href="#Horizontal-Rules" class="headerlink" title="Horizontal Rules"></a>Horizontal Rules</h4><p>Three or more asterisks or dashes:</p>
+<hr>
+<hr>
+<hr>
+<h4 id="Headers"><a href="#Headers" class="headerlink" title="Headers"></a>Headers</h4><p>Setext-style:</p>
+<h1 id="This-is-H1"><a href="#This-is-H1" class="headerlink" title="This is H1"></a>This is H1</h1><h2 id="This-is-H2"><a href="#This-is-H2" class="headerlink" title="This is H2"></a>This is H2</h2><p>atx-style:</p>
+<h1 id="This-is-H1-1"><a href="#This-is-H1-1" class="headerlink" title="This is H1"></a>This is H1</h1><h2 id="This-is-H2-1"><a href="#This-is-H2-1" class="headerlink" title="This is H2"></a>This is H2</h2><h3 id="This-is-H3"><a href="#This-is-H3" class="headerlink" title="This is H3"></a>This is H3</h3><h4 id="This-is-H4"><a href="#This-is-H4" class="headerlink" title="This is H4"></a>This is H4</h4><h5 id="This-is-H5"><a href="#This-is-H5" class="headerlink" title="This is H5"></a>This is H5</h5><h6 id="This-is-H6"><a href="#This-is-H6" class="headerlink" title="This is H6"></a>This is H6</h6><h3 id="Extra-Syntax"><a href="#Extra-Syntax" class="headerlink" title="Extra Syntax"></a>Extra Syntax</h3><h4 id="Footnotes"><a href="#Footnotes" class="headerlink" title="Footnotes"></a>Footnotes</h4><p>Footnotes work mostly like reference-style links. A footnote is made of two things: a marker in the text that will become a superscript number; a footnote definition that will be placed in a list of footnotes at the end of the document. A footnote looks like this:</p>
+<p>That’s some text with a footnote.[^1]</p>
+<p>[^1]: And that’s the footnote.</p>
+<h4 id="Strikethrough"><a href="#Strikethrough" class="headerlink" title="Strikethrough"></a>Strikethrough</h4><p>Wrap with 2 tilde characters:</p>
+<p><del>Strikethrough</del></p>
+<h4 id="Fenced-Code-Blocks"><a href="#Fenced-Code-Blocks" class="headerlink" title="Fenced Code Blocks"></a>Fenced Code Blocks</h4><p>Start with a line containing 3 or more backticks, and ends with the first line with the same number of backticks:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Fenced code blocks are like Stardard Markdown’s regular code</div><div class="line">blocks, except that they’re not indented and instead rely on</div><div class="line">a start and end fence lines to delimit the code block.</div></pre></td></tr></table></figure>
+<h4 id="Tables"><a href="#Tables" class="headerlink" title="Tables"></a>Tables</h4><p>A simple table looks like this:</p>
+<table>
+<thead>
+<tr>
+<th>First Header</th>
+<th>Second Header</th>
+<th>Third Header</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content Cell</td>
+<td>Content Cell</td>
+<td>Content Cell</td>
+</tr>
+<tr>
+<td>Content Cell</td>
+<td>Content Cell</td>
+<td>Content Cell</td>
+</tr>
+</tbody>
+</table>
+<p>If you wish, you can add a leading and tailing pipe to each line of the table:</p>
+<table>
+<thead>
+<tr>
+<th>First Header</th>
+<th>Second Header</th>
+<th>Third Header</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content Cell</td>
+<td>Content Cell</td>
+<td>Content Cell</td>
+</tr>
+<tr>
+<td>Content Cell</td>
+<td>Content Cell</td>
+<td>Content Cell</td>
+</tr>
+</tbody>
+</table>
+<p>Specify alignment for each column by adding colons to separator lines:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">First Header</th>
+<th style="text-align:center">Second Header</th>
+<th style="text-align:right">Third Header</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Left</td>
+<td style="text-align:center">Center</td>
+<td style="text-align:right">Right</td>
+</tr>
+<tr>
+<td style="text-align:left">Left</td>
+<td style="text-align:center">Center</td>
+<td style="text-align:right">Right</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Shortcuts"><a href="#Shortcuts" class="headerlink" title="Shortcuts"></a>Shortcuts</h3><h4 id="View"><a href="#View" class="headerlink" title="View"></a>View</h4><ul>
+<li>Toggle live preview: Shift + Cmd + I</li>
+<li>Toggle Words Counter: Shift + Cmd + W</li>
+<li>Toggle Transparent: Shift + Cmd + T</li>
+<li>Toggle Floating: Shift + Cmd + F</li>
+<li>Left/Right = 1/1: Cmd + 0</li>
+<li>Left/Right = 3/1: Cmd + +</li>
+<li>Left/Right = 1/3: Cmd + -</li>
+<li>Toggle Writing orientation: Cmd + L</li>
+<li>Toggle fullscreen: Control + Cmd + F</li>
+</ul>
+<h4 id="Actions"><a href="#Actions" class="headerlink" title="Actions"></a>Actions</h4><ul>
+<li>Copy HTML: Option + Cmd + C</li>
+<li>Strong: Select text, Cmd + B</li>
+<li>Emphasize: Select text, Cmd + I</li>
+<li>Inline Code: Select text, Cmd + K</li>
+<li>Strikethrough: Select text, Cmd + U</li>
+<li>Link: Select text, Control + Shift + L</li>
+<li>Image: Select text, Control + Shift + I</li>
+<li>Select Word: Control + Option + W</li>
+<li>Select Line: Shift + Cmd + L</li>
+<li>Select All: Cmd + A</li>
+<li>Deselect All: Cmd + D</li>
+<li>Convert to Uppercase: Select text, Control + U</li>
+<li>Convert to Lowercase: Select text, Control + Shift + U</li>
+<li>Convert to Titlecase: Select text, Control + Option + U</li>
+<li>Convert to List: Select lines, Control + L</li>
+<li>Convert to Blockquote: Select lines, Control + Q</li>
+<li>Convert to H1: Cmd + 1</li>
+<li>Convert to H2: Cmd + 2</li>
+<li>Convert to H3: Cmd + 3</li>
+<li>Convert to H4: Cmd + 4</li>
+<li>Convert to H5: Cmd + 5</li>
+<li>Convert to H6: Cmd + 6</li>
+<li>Convert Spaces to Tabs: Control + [</li>
+<li>Convert Tabs to Spaces: Control + ]</li>
+<li>Insert Current Date: Control + Shift + 1</li>
+<li>Insert Current Time: Control + Shift + 2</li>
+<li>Insert entity &lt;: Control + Shift + ,</li>
+<li>Insert entity &gt;: Control + Shift + .</li>
+<li>Insert entity &amp;: Control + Shift + 7</li>
+<li>Insert entity Space: Control + Shift + Space</li>
+<li>Insert Scriptogr.am Header: Control + Shift + G</li>
+<li>Shift Line Left: Select lines, Cmd + [</li>
+<li>Shift Line Right: Select lines, Cmd + ]</li>
+<li>New Line: Cmd + Return</li>
+<li>Comment: Cmd + /</li>
+<li>Hard Linebreak: Control + Return</li>
+</ul>
+<h4 id="Edit"><a href="#Edit" class="headerlink" title="Edit"></a>Edit</h4><ul>
+<li>Auto complete current word: Esc</li>
+<li>Find: Cmd + F</li>
+<li>Close find bar: Esc</li>
+</ul>
+<h4 id="Post"><a href="#Post" class="headerlink" title="Post"></a>Post</h4><ul>
+<li>Post on Scriptogr.am: Control + Shift + S</li>
+<li>Post on Tumblr: Control + Shift + T</li>
+</ul>
+<h4 id="Export"><a href="#Export" class="headerlink" title="Export"></a>Export</h4><ul>
+<li>Export HTML: Option + Cmd + E</li>
+<li>Export PDF:  Option + Cmd + P</li>
+</ul>
+<h4 id="LaTex"><a href="#LaTex" class="headerlink" title="LaTex"></a>LaTex</h4><p>\[\begin{aligned}<br>\dot{x} &amp; = \sigma(y-x) \\<br>\dot{y} &amp; = \rho x - y - xz \\<br>\dot{z} &amp; = -\beta z + xy<br>\end{aligned}<br>\]</p>
+<p>$$<br>\frac{\partial u}{\partial t} = h^2 \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2}\right)<br>$$</p>
+<p>$$<br>\sum_1^n x^2 = 1<br>$$</p>
+<h3 id="And-more"><a href="#And-more" class="headerlink" title="And more?"></a>And more?</h3><p>Don’t forget to check Preferences, lots of useful options are there.</p>
+<p>Follow <a href="https://twitter.com/mou" target="_blank" rel="external">@Mou</a> on Twitter for the latest news.</p>
+<p>For feedback, use the menu <code>Help</code> - <code>Send Feedback</code></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 网站配置相关 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> mou </tag>
+            
+            <tag> markdown </tag>
+            
+        </tags>
+        
     </entry>
-
     
   
   
