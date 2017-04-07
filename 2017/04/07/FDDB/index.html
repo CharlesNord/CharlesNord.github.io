@@ -96,7 +96,7 @@
 <meta property="og:site_name" content="计算机视觉笔记">
 <meta property="og:description" content="本文简要翻译了 FDDB: A benchmark for Face Detection in Unconstrained Settings.">
 <meta property="og:image" content="http://charlesnord.github.io/2017/04/07/FDDB/algorithm1.png">
-<meta property="og:updated_time" content="2017-04-07T03:37:23.000Z">
+<meta property="og:updated_time" content="2017-04-07T03:40:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FDDB">
 <meta name="twitter:description" content="本文简要翻译了 FDDB: A benchmark for Face Detection in Unconstrained Settings.">
@@ -435,8 +435,8 @@
 <p>其中 <strong>d</strong> 是 set of degrees of all nodes in G，$W_G$ 是 G 的 adjacency matrix。图 G 到 $L_G$ 的前几个特征向量张成的子空间的投影，可以为每对节点（一个节点代表一张图片）提供一个很有效的距离测度。作者在这个投影空间中用 mean-shift clustering with a narrow kernel，得到图片的聚类。</p>
 <img src="/2017/04/07/FDDB/algorithm1.png" alt="Algorithm 1" title="Algorithm 1">
 <p>利用该算法，7 次迭代，人工发现了 103 个聚类，消灭了 682 张重复图片。</p>
-<h2 id="5-人脸区域标定"><a href="#5-人脸区域标定" class="headerlink" title="5. 人脸区域标定"></a>5. 人脸区域标定</h2><p>预标定：在 2845 （3527 张原有的图减 682 张重复的图）张图片中，画出每个人脸的矩形框。长或宽小于 20 像素的人脸被排除，得到了 5171 个人脸标定。有些地区不太好确认是否标定为人脸，原因包括低分辨率，遮挡，头部角度等。作者采用多人标定，取平均值的手法。对于下面这些情况，标定者需要将其排除人脸：两只眼睛同时被遮挡、无法估计（定性地 qualitatively）位置、尺寸或者朝向。Appendix A 中描述了标定流程。</p>
-<h3 id="5-1-Elliptical-Face-Regions"><a href="#5-1-Elliptical-Face-Regions" class="headerlink" title="5.1 Elliptical Face Regions"></a>5.1 Elliptical Face Regions</h3><p>作者表示人的头部可以用两个椭球近似，进而认为用椭圆标定人脸比用矩形更准确，所以采用椭圆标定。采用的椭圆参数有：中心坐标、长轴/段轴的长度、以及方向。由于现实中人脸在 2 维的投影不是规则的椭圆，所以用椭圆标定人脸很有挑战。为了使标定一致，人工按照下面的流程进行标定：</p>
+<h2 id="人脸区域标定"><a href="#人脸区域标定" class="headerlink" title="人脸区域标定"></a>人脸区域标定</h2><p>预标定：在 2845 （3527 张原有的图减 682 张重复的图）张图片中，画出每个人脸的矩形框。长或宽小于 20 像素的人脸被排除，得到了 5171 个人脸标定。有些地区不太好确认是否标定为人脸，原因包括低分辨率，遮挡，头部角度等。作者采用多人标定，取平均值的手法。对于下面这些情况，标定者需要将其排除人脸：两只眼睛同时被遮挡、无法估计（定性地 qualitatively）位置、尺寸或者朝向。Appendix A 中描述了标定流程。</p>
+<h3 id="Elliptical-Face-Regions"><a href="#Elliptical-Face-Regions" class="headerlink" title="Elliptical Face Regions"></a>Elliptical Face Regions</h3><p>作者表示人的头部可以用两个椭球近似，进而认为用椭圆标定人脸比用矩形更准确，所以采用椭圆标定。采用的椭圆参数有：中心坐标、长轴/段轴的长度、以及方向。由于现实中人脸在 2 维的投影不是规则的椭圆，所以用椭圆标定人脸很有挑战。为了使标定一致，人工按照下面的流程进行标定：</p>
 <ul>
 <li><p>椭圆的长轴两个端点分别是人脸的下巴和椭球（用来近似人头的那个）最上端的点，椭圆不包括耳朵部分</p>
 </li>
@@ -446,7 +446,7 @@
 </li>
 </ul>
 <p>接下来需要设计一个一致且合理的评估标准。</p>
-<h2 id="6-Evaluation"><a href="#6-Evaluation" class="headerlink" title="6. Evaluation"></a>6. Evaluation</h2><p>首先要做出几点假设：</p>
+<h2 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h2><p>首先要做出几点假设：</p>
 <ul>
 <li><p>每个检测结果都与它毗邻的图像区域对应</p>
 </li>
@@ -677,7 +677,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comparing-face-detection-approaches"><span class="nav-number">2.</span> <span class="nav-text">Comparing face detection approaches</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FDDB-Face-Detection-Data-set-and-Bench-mark"><span class="nav-number">3.</span> <span class="nav-text">FDDB: Face Detection Data set and Bench-mark</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Construction-of-the-data-set"><span class="nav-number">3.1.</span> <span class="nav-text">Construction of the data set</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Near-duplicate-detection"><span class="nav-number">4.</span> <span class="nav-text">Near-duplicate detection</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-人脸区域标定"><span class="nav-number">5.</span> <span class="nav-text">5. 人脸区域标定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-Elliptical-Face-Regions"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 Elliptical Face Regions</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Evaluation"><span class="nav-number">6.</span> <span class="nav-text">6. Evaluation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Matching-detections-and-annotations"><span class="nav-number">6.1.</span> <span class="nav-text">Matching detections and annotations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Evaluation-metrics"><span class="nav-number">6.2.</span> <span class="nav-text">Evaluation metrics</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据格式"><span class="nav-number">7.</span> <span class="nav-text">数据格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">8.</span> <span class="nav-text">代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comparing-face-detection-approaches"><span class="nav-number">2.</span> <span class="nav-text">Comparing face detection approaches</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FDDB-Face-Detection-Data-set-and-Bench-mark"><span class="nav-number">3.</span> <span class="nav-text">FDDB: Face Detection Data set and Bench-mark</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Construction-of-the-data-set"><span class="nav-number">3.1.</span> <span class="nav-text">Construction of the data set</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Near-duplicate-detection"><span class="nav-number">4.</span> <span class="nav-text">Near-duplicate detection</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#人脸区域标定"><span class="nav-number">5.</span> <span class="nav-text">人脸区域标定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Elliptical-Face-Regions"><span class="nav-number">5.1.</span> <span class="nav-text">Elliptical Face Regions</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Evaluation"><span class="nav-number">6.</span> <span class="nav-text">Evaluation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Matching-detections-and-annotations"><span class="nav-number">6.1.</span> <span class="nav-text">Matching detections and annotations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Evaluation-metrics"><span class="nav-number">6.2.</span> <span class="nav-text">Evaluation metrics</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据格式"><span class="nav-number">7.</span> <span class="nav-text">数据格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">8.</span> <span class="nav-text">代码</span></a></li></ol></div>
             
 
           </div>
