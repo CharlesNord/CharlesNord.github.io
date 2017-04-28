@@ -73,7 +73,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="opencv," />
 
 
 
@@ -89,12 +89,19 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="计算机视觉笔记">
-<meta property="og:url" content="http://charlesnord.github.io/archives/2017/index.html">
+<meta name="description" content="在用 OpenCV 批量处理图片时，出现了题目所示的警告，直接翻译就是“JPEG 文件过早地结束”。这说明该批图片中存在不完整的文件。一般是由于拷贝、下载不完整造成的。遇到这种情况，首先要定位到底是哪个文件出了问题，然后再修改它。
+定位文件12345def check(path):    with open(path, &amp;apos;rb&amp;apos;) as f:        f.seek(-2,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCV 读取图片时警告 Premature end of JPEG file">
+<meta property="og:url" content="http://charlesnord.github.io/2017/04/28/PrematureEndofJPEGfile/index.html">
 <meta property="og:site_name" content="计算机视觉笔记">
+<meta property="og:description" content="在用 OpenCV 批量处理图片时，出现了题目所示的警告，直接翻译就是“JPEG 文件过早地结束”。这说明该批图片中存在不完整的文件。一般是由于拷贝、下载不完整造成的。遇到这种情况，首先要定位到底是哪个文件出了问题，然后再修改它。
+定位文件12345def check(path):    with open(path, &amp;apos;rb&amp;apos;) as f:        f.seek(-2,">
+<meta property="og:updated_time" content="2017-04-28T02:19:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="计算机视觉笔记">
+<meta name="twitter:title" content="OpenCV 读取图片时警告 Premature end of JPEG file">
+<meta name="twitter:description" content="在用 OpenCV 批量处理图片时，出现了题目所示的警告，直接翻译就是“JPEG 文件过早地结束”。这说明该批图片中存在不完整的文件。一般是由于拷贝、下载不完整造成的。遇到这种情况，首先要定位到底是哪个文件出了问题，然后再修改它。
+定位文件12345def check(path):    with open(path, &amp;apos;rb&amp;apos;) as f:        f.seek(-2,">
 
 
 
@@ -122,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="http://charlesnord.github.io/archives/2017/"/>
+  <link rel="canonical" href="http://charlesnord.github.io/2017/04/28/PrematureEndofJPEGfile/"/>
 
 
 
 
 
-  <title> 归档 | 计算机视觉笔记 </title>
+  <title> OpenCV 读取图片时警告 Premature end of JPEG file | 计算机视觉笔记 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -153,7 +160,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  page-archive  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -279,403 +286,177 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 11 篇日志。 继续努力。
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://charlesnord.github.io/2017/04/28/PrematureEndofJPEGfile/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="楠有乔木">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/bear.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="计算机视觉笔记">
     </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                OpenCV 读取图片时警告 Premature end of JPEG file
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-28T09:36:26+08:00">
+                2017-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/04/28/PrematureEndofJPEGfile/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/28/PrematureEndofJPEGfile/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+          
+          <span>&nbsp; | &nbsp;
+          <span id="busuanzi_value_page_pv" ></span>次阅读
+          </span>
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
-      
 
+      
+        <p>在用 OpenCV 批量处理图片时，出现了题目所示的警告，直接翻译就是“JPEG 文件过早地结束”。这说明该批图片中存在不完整的文件。一般是由于拷贝、下载不完整造成的。遇到这种情况，首先要定位到底是哪个文件出了问题，然后再修改它。</p>
+<h2 id="定位文件"><a href="#定位文件" class="headerlink" title="定位文件"></a>定位文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def check(path):</div><div class="line">    with open(path, &apos;rb&apos;) as f:</div><div class="line">        f.seek(-2,2)</div><div class="line">        if f.read() != &apos;\xff\xd9&apos;:</div><div class="line">            print path</div></pre></td></tr></table></figure>
+<p>其中 fileObject.seek() 函数，用于定位指针在文件中的位置。</p>
+<p>调用方法为：<code>fileObject.seek(offset[, whence])</code></p>
+<p>它包含两个参数：</p>
+<ul>
+<li>offset 需要偏移的字节数，必要参数</li>
+<li>whence 从哪个位置开始偏移，默认为 0，代表从文件开头开始算起，1 代表从当前位置开始算起，2 代表从文件末尾算起。</li>
+</ul>
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"> # test.txt contents:</div><div class="line"> # ABCDE</div><div class="line"></div><div class="line">&gt;&gt;&gt; f = open(r&apos;test.txt&apos;)</div><div class="line">&gt;&gt;&gt; f.seek(3) # 从开头偏移三个字节</div><div class="line">&gt;&gt;&gt; f.read() # 偏移 3 个字节后开始读取文件</div><div class="line">&apos;DE&apos;</div><div class="line"></div><div class="line">&gt;&gt;&gt; f = open(r&apos;test.txt&apos;)</div><div class="line">&gt;&gt;&gt; f.seek(2)    # 从文件开头偏移 2 个字节</div><div class="line">&gt;&gt;&gt; f.seek(2, 1) # 第二个参数是1，因此是基于上面的偏移继续偏移 2 个字节，因此当前指针位置在第四个字节</div><div class="line">&gt;&gt;&gt; f.read() # 从第四个字节开始读（不包括第四个字节），所以读到第五个字节</div><div class="line">&apos;E&apos;</div><div class="line"></div><div class="line">&gt;&gt;&gt; f = open(r&apos;test.txt&apos;)</div><div class="line">&gt;&gt;&gt; f.seek(-3, 2) # 第二个参数是 2，表示从文件末尾开始偏移，向前偏移 3 个字节</div><div class="line">&gt;&gt;&gt; f.read() # 从倒数第三个字节开始读（包括倒数第三个字节）</div><div class="line">&apos;CDE&apos;</div></pre></td></tr></table></figure>
+<p>掌握了这个函数，再回过头理解之前检验 JPEG 文件的代码。其原理就是，检验二进制图片文件末尾两个字节的编码，看它是否为 “\xff\xd9”，如果不是，说明这个图片文件是不完整的。</p>
+<h2 id="修改文件"><a href="#修改文件" class="headerlink" title="修改文件"></a>修改文件</h2><p>找到这个不完整的文件，用 opencv 读取，然后显示它，发现它确实有部分残缺，修改方法很简单，用 opencv 重新写入文件即可。该操作并不能真正修复缺失的图片信息，但是可以强制给不完整的图片加上结尾编码，使程序不再出现警告。</p>
+
+      
+    </div>
+
+    <div>
       
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/opencv/" rel="tag"># opencv</a>
+          
         </div>
       
+
+      
+        
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/16/numpy-lexsort/" rel="next" title="numpy.lexsort">
+                <i class="fa fa-chevron-left"></i> numpy.lexsort
+              </a>
+            
+          </div>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          <span class="post-nav-divider"></span>
 
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/04/28/PrematureEndofJPEGfile/" itemprop="url">
-              
-                <span itemprop="name">OpenCV 读取图片时警告 Premature end of JPEG file</span>
-              
-            </a>
-        
-      </h1>
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-28T09:36:26+08:00"
-              content="2017-04-28" >
-          04-28
-        </time>
-      </div>
-
-    </header>
+      
+      
+    </footer>
   </article>
 
 
 
-    
-
+    <div class="post-spread">
       
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/04/16/numpy-lexsort/" itemprop="url">
-              
-                <span itemprop="name">numpy.lexsort</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-16T22:24:32+08:00"
-              content="2017-04-16" >
-          04-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/04/07/matplotlib/" itemprop="url">
-              
-                <span itemprop="name">matplotlib</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-07T16:23:30+08:00"
-              content="2017-04-07" >
-          04-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/04/07/FDDB/" itemprop="url">
-              
-                <span itemprop="name">FDDB</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-07T11:14:21+08:00"
-              content="2017-04-07" >
-          04-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/04/05/perceptron/" itemprop="url">
-              
-                <span itemprop="name">感知机</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-05T05:00:58+08:00"
-              content="2017-04-05" >
-          04-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/04/01/rotation/" itemprop="url">
-              
-                <span itemprop="name">旋转矩阵</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-01T16:04:18+08:00"
-              content="2017-04-01" >
-          04-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/11/cython-tuto/" itemprop="url">
-              
-                <span itemprop="name">Cython 入门教程</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-11T22:35:55+08:00"
-              content="2017-03-11" >
-          03-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/05/基本操作/" itemprop="url">
-              
-                <span itemprop="name">Hexo 基本操作</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-05T15:11:26+08:00"
-              content="2017-03-05" >
-          03-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/05/hello-world/" itemprop="url">
-              
-                <span itemprop="name">Hello World</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-05T02:53:59+08:00"
-              content="2017-03-05" >
-          03-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/05/osx-占用/" itemprop="url">
-              
-                <span itemprop="name">项目已被 OSX 使用，不能打开</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-05T00:53:29+08:00"
-              content="2017-03-05" >
-          03-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/2017/page/2/">2</a><a class="extend next" rel="next" href="/archives/2017/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-
+    </div>
+  </div>
 
           
           </div>
@@ -683,6 +464,17 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -702,8 +494,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/bear.jpeg"
@@ -781,6 +582,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定位文件"><span class="nav-number">1.</span> <span class="nav-text">定位文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改文件"><span class="nav-number">2.</span> <span class="nav-text">修改文件</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -896,11 +713,9 @@
 
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
 
 
   
@@ -918,9 +733,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'charlesyin';
-      var disqus_identifier = 'archives/2017/index.html';
+      var disqus_identifier = '2017/04/28/PrematureEndofJPEGfile/';
 
-      var disqus_title = "";
+      var disqus_title = "OpenCV 读取图片时警告 Premature end of JPEG file";
 
 
       function run_disqus_script(disqus_script) {
@@ -933,6 +748,13 @@
 
       run_disqus_script('count.js');
 
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
       
 
     </script>

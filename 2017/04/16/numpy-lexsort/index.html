@@ -90,24 +90,18 @@
 
 
 <meta name="description" content="1numpy.lexsort(key, axis=-1)
-用于对多个序列进行排序。把它想象成对电子表格进行排序，每一列代表一个序列，排序时优先照顾靠后的列。这里举一个应用场景：小升初考试，重点班录取学生按照总成绩录取。在总成绩相同时，数学成绩高的优先录取，在总成绩和数学成绩都相同时，按照英语成绩录取…… 这里，总成绩排在电子表格的最后一列，数学成绩在倒数第二列，英语成绩在倒数第三列。
-举例：
-12">
+用于对多个序列进行排序。把它想象成对电子表格进行排序，每一列代表一个序列，排序时优先照顾靠后的列。这里举一个应用场景：小升初考试，重点班录取学生按照总成绩录取。在总成绩相同时，数学成绩高的优先录取，在总成绩和数学成绩都相同时，按照英语成绩录取…… 这里，总成绩排在电子表格的最后一列，数学成绩在倒数第二列，英语成绩在倒数第三列。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="numpy.lexsort">
 <meta property="og:url" content="http://charlesnord.github.io/2017/04/16/numpy-lexsort/index.html">
 <meta property="og:site_name" content="计算机视觉笔记">
 <meta property="og:description" content="1numpy.lexsort(key, axis=-1)
-用于对多个序列进行排序。把它想象成对电子表格进行排序，每一列代表一个序列，排序时优先照顾靠后的列。这里举一个应用场景：小升初考试，重点班录取学生按照总成绩录取。在总成绩相同时，数学成绩高的优先录取，在总成绩和数学成绩都相同时，按照英语成绩录取…… 这里，总成绩排在电子表格的最后一列，数学成绩在倒数第二列，英语成绩在倒数第三列。
-举例：
-12">
-<meta property="og:updated_time" content="2017-04-16T17:30:51.000Z">
+用于对多个序列进行排序。把它想象成对电子表格进行排序，每一列代表一个序列，排序时优先照顾靠后的列。这里举一个应用场景：小升初考试，重点班录取学生按照总成绩录取。在总成绩相同时，数学成绩高的优先录取，在总成绩和数学成绩都相同时，按照英语成绩录取…… 这里，总成绩排在电子表格的最后一列，数学成绩在倒数第二列，英语成绩在倒数第三列。">
+<meta property="og:updated_time" content="2017-04-20T07:55:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="numpy.lexsort">
 <meta name="twitter:description" content="1numpy.lexsort(key, axis=-1)
-用于对多个序列进行排序。把它想象成对电子表格进行排序，每一列代表一个序列，排序时优先照顾靠后的列。这里举一个应用场景：小升初考试，重点班录取学生按照总成绩录取。在总成绩相同时，数学成绩高的优先录取，在总成绩和数学成绩都相同时，按照英语成绩录取…… 这里，总成绩排在电子表格的最后一列，数学成绩在倒数第二列，英语成绩在倒数第三列。
-举例：
-12">
+用于对多个序列进行排序。把它想象成对电子表格进行排序，每一列代表一个序列，排序时优先照顾靠后的列。这里举一个应用场景：小升初考试，重点班录取学生按照总成绩录取。在总成绩相同时，数学成绩高的优先录取，在总成绩和数学成绩都相同时，按照英语成绩录取…… 这里，总成绩排在电子表格的最后一列，数学成绩在倒数第二列，英语成绩在倒数第三列。">
 
 
 
@@ -390,8 +384,7 @@
 
       
         <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">numpy.lexsort(key, axis=-1)</div></pre></td></tr></table></figure>
-<p>用于对多个序列进行排序。把它想象成对电子表格进行排序，每一列代表一个序列，排序时优先照顾靠后的列。这里举一个应用场景：小升初考试，重点班录取学生按照总成绩录取。在总成绩相同时，数学成绩高的优先录取，在总成绩和数学成绩都相同时，按照英语成绩录取…… 这里，总成绩排在电子表格的最后一列，数学成绩在倒数第二列，英语成绩在倒数第三列。</p>
-<p>举例：</p>
+<p>用于对多个序列进行排序。把它想象成对电子表格进行排序，每一列代表一个序列，排序时优先照顾靠后的列。这里举一个应用场景：小升初考试，重点班录取学生按照总成绩录取。在总成绩相同时，数学成绩高的优先录取，在总成绩和数学成绩都相同时，按照英语成绩录取…… 这里，总成绩排在电子表格的最后一列，数学成绩在倒数第二列，英语成绩在倒数第三列。<br><a id="more"></a><br>举例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; surnames =    (&apos;Hertz&apos;,    &apos;Galilei&apos;, &apos;Hertz&apos;)</div><div class="line">&gt;&gt;&gt; first_names = (&apos;Heinrich&apos;, &apos;Galileo&apos;, &apos;Gustav&apos;)</div><div class="line">&gt;&gt;&gt; ind = np.lexsort((first_names, surnames))</div><div class="line">&gt;&gt;&gt; ind</div><div class="line">array([1, 2, 0])</div></pre></td></tr></table></figure>
 <p>打印查看效果：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; [surnames[i] + &quot;, &quot; + first_names[i] for i in ind]</div><div class="line">[&apos;Galilei, Galileo&apos;, &apos;Hertz, Gustav&apos;, &apos;Hertz, Heinrich&apos;]</div></pre></td></tr></table></figure>
@@ -443,6 +436,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/28/PrematureEndofJPEGfile/" rel="prev" title="OpenCV 读取图片时警告 Premature end of JPEG file">
+                OpenCV 读取图片时警告 Premature end of JPEG file <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -512,7 +509,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -530,7 +527,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -4,8 +4,25 @@
 
     
   <url>
+    <loc>http://charlesnord.github.io/2017/04/28/PrematureEndofJPEGfile/</loc>
+    <lastmod>2017-04-28T02:19:57.000Z</lastmod>
+    <data>
+        <display>
+        <title>OpenCV 读取图片时警告 Premature end of JPEG file</title>
+        <pubTime>2017-04-28T01:36:26.000Z</pubTime>
+        
+        <tag>opencv</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://charlesnord.github.io/2017/04/16/numpy-lexsort/</loc>
-    <lastmod>2017-04-16T17:30:51.000Z</lastmod>
+    <lastmod>2017-04-20T07:55:09.000Z</lastmod>
     <data>
         <display>
         <title>numpy.lexsort</title>
